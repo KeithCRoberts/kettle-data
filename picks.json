@@ -1,0 +1,290 @@
+{
+  "schema": 1,
+  "period": "2X25",
+  "payoff": {
+    "ante": 100,
+    "win": 75,
+    "place": 40,
+    "show": 25,
+    "fines": {
+	  "gainer_is_losing": 10,
+	  "loser_is_gaining": 10,
+	  "loser_gt_gainer": 10,
+	  "slacker": 50
+    }
+  },
+  "members": [
+    {
+      "name": "Al Hammelman",
+      "nickname": "Al",
+      "S&P": 6643.00,
+      "gainer": "AEVA",
+      "loser": "CERO",
+      "lock": "NEON",
+      "basket1": "SEZL",
+      "basket2": "NEON",
+      "basket3": "QBTS"
+    },
+    {
+      "name": "Bob Taubert",
+      "nickname": "Bob",
+	  "deviceid": "075CCD6B",
+      "S&P": 6561.00,
+      "gainer": "NVDA",
+      "loser": "CYN",
+      "lock": "EYPT",
+      "basket1": "KTOS",
+      "basket2": "HWM",
+      "basket3": "CW"
+    },
+    {
+      "name": "Dave Fink",
+      "nickname": "Dave",
+      "S&P": 6852.00,
+      "gainer": "CRM",
+      "loser": "EBS",
+      "lock": "SOUN",
+      "basket1": "NCLH",
+      "basket2": "TGT",
+      "basket3": "NFG"
+    },
+    {
+      "name": "Joe Kaberlein",
+      "nickname": "Joe",
+      "S&P": 6408.00,
+      "gainer": "ALAB",
+      "loser": "INDP",
+      "lock": "POET",
+      "basket1": "MU",
+      "basket2": "SMCI",
+      "basket3": "PLTR"
+    },
+    {
+      "name": "Keith Roberts",
+      "nickname": "Keith",
+  	  "deviceid": "05E40069",
+      "S&P": 6481.75,
+      "gainer": "CRWD",
+      "loser": "KSS",
+      "lock": "LLY",
+      "basket1": "NVDA",
+      "basket2": "AMD",
+      "basket3": "SMCI"
+    },
+    {
+      "name": "Ron Taubert",
+      "nickname": "Ron",
+	  "deviceid": "23470A2B",
+      "S&P": 6313.00,
+      "gainer": "RGTI",
+      "loser": "HOG",
+      "lock": "QUBT",
+      "basket1": "BABA",
+      "basket2": "AAPL",
+      "basket3": "GOOGL"
+    },
+    {
+      "name": "Tim Osborne",
+      "nickname": "Tim",
+      "S&P": 6572.74,
+      "gainer": "HEI",
+      "loser": "XXII",
+      "lock": "CRWD",
+      "basket1": "UI",
+      "basket2": "AAPL",
+      "basket3": "OKTA"
+    }
+  ],
+  "watchlist": [
+    {
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "open": 6204.95
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc",
+      "open": 205.17
+    },
+    {
+      "symbol": "AEVA",
+      "name": "Aeva Technologies Inc",
+      "open": 37.79
+    },
+    {
+      "symbol": "ALAB",
+      "name": "Astera Labs Inc",
+      "open": 90.42
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices Inc.",
+      "open": 141.90
+    },
+    {
+      "symbol": "BABA",
+      "name": "Alibaba Group Holding Ltd",
+      "open": 113.41
+    },
+    {
+      "symbol": "CERO",
+      "name": "CERO Therapeutics Holdings Inc",
+      "open": 9.63
+    },
+    {
+      "symbol": "CRM",
+      "name": "Salesforce Inc",
+      "open": 272.69
+    },
+    {
+      "symbol": "CRWD",
+      "name": "Crowdstrike Holdings Inc",
+      "open": 509.31
+    },
+    {
+      "symbol": "CW",
+      "name": "Curtiss-Wright Corp",
+      "open": 488.55
+    },
+    {
+      "symbol": "CYN",
+      "name": "Cyngn Inc",
+      "open": 14.40
+    },
+    {
+      "symbol": "EBS",
+      "name": "Emergent Biosolutions Inc",
+      "open": 6.38
+    },
+    {
+      "symbol": "EYPT",
+      "name": "Eyepoint Pharmaceuticals Inc",
+      "open": 9.41
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc",
+      "open": 176.23
+    },
+    {
+      "symbol": "HEI",
+      "name": "Heico Corp",
+      "open": 328.00
+    },
+    {
+      "symbol": "HOG",
+      "name": "Harley-Davidson Inc",
+      "open": 23.60
+    },
+    {
+      "symbol": "HWM",
+      "name": "Howmet Aerospace Inc",
+      "open": 186.13
+    },
+    {
+      "symbol": "INDP",
+      "name": "Indaptus Therapeutics Inc",
+      "open": 10.53
+    },
+    {
+      "symbol": "KSS",
+      "name": "Kohl's Corp.",
+      "open": 8.48
+    },
+    {
+      "symbol": "KTOS",
+      "name": "Kratos Defense & Security Solutions Inc",
+      "open": 46.45
+    },
+    {
+      "symbol": "LLY",
+      "name": "Lilly(Eli) & Co",
+      "open": 779.53
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology Inc",
+      "open": 123.25
+    },
+    {
+      "symbol": "NCLH",
+      "name": "Norwegian Cruise Line Holdings Ltd",
+      "open": 20.28
+    },
+    {
+      "symbol": "NEON",
+      "name": "Neonode Inc",
+      "open": 25.50
+    },
+    {
+      "symbol": "NFG",
+      "name": "National Fuel Gas Co",
+      "open": 84.71
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp",
+      "open": 157.99
+    },
+    {
+      "symbol": "OKTA",
+      "name": "Okta Inc",
+      "open": 99.97
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc",
+      "open": 136.32
+    },
+    {
+      "symbol": "POET",
+      "name": "POET Technologies Inc",
+      "open": 5.21
+    },
+    {
+      "symbol": "QBTS",
+      "name": "D-Wave Quantum Inc",
+      "open": 14.64
+    },
+    {
+      "symbol": "QUBT",
+      "name": "Quantum Computing Inc",
+      "open": 19.17
+    },
+    {
+      "symbol": "RGTI",
+      "name": "Rigetti Computing Inc",
+      "open": 11.86
+    },
+    {
+      "symbol": "SEZL",
+      "name": "Sezzle Inc",
+      "open": 179.25
+    },
+    {
+      "symbol": "SMCI",
+      "name": "Super Micro Computer Inc",
+      "open": 49.01
+    },
+    {
+      "symbol": "SOUN",
+      "name": "SoundHound AI Inc",
+      "open": 10.73
+    },
+    {
+      "symbol": "TGT",
+      "name": "Target Corp",
+      "open": 98.65
+    },
+    {
+      "symbol": "UI",
+      "name": "Ubiquiti Inc",
+      "open": 411.65
+    },
+    {
+      "symbol": "XXII",
+      "name": "22nd Century Group Inc",
+      "open": 7.53
+    }
+  ]
+}
