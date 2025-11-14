@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "period": "2Z25", {
+  "peod": "2Z25", {
   "payoff": {
     "ante": 100,
     "win": 75,
