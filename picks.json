@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "period": "2H25",
+  "period": "2K25",
   "payoff": {
     "ante": 100,
     "win": 75,
