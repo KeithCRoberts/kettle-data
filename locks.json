@@ -1,4 +1,4 @@
 { "schema": 1, 
   "period": "2H25",
-  "locks": [ ] 
+  "locks": [ {"member": "Dave Fink", "symbol": "SOUN", "date": "2025-10-06", "price": 18.50} ] 
 }
