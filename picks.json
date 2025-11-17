@@ -1,5 +1,4 @@
 {
-  "schema": 1,
   "period": "2H25",
   "payoff": {
     "ante": 100,
@@ -62,7 +61,7 @@
     {
       "name": "Keith Roberts",
       "nickname": "Keith",
-  	  "deviceid": "05E40069",
+  	  "deviceid": "C4CE1D88",
       "S&P": 6481.75,
       "gainer": "CRWD",
       "loser": "KSS",
@@ -74,7 +73,6 @@
     {
       "name": "Ron Taubert",
       "nickname": "Ron",
-	  "deviceid": "23470A2B",
       "S&P": 6313.00,
       "gainer": "RGTI",
       "loser": "HOG",
