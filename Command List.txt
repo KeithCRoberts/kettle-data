@@ -1,0 +1,8 @@
+Kettle - Valid Commands
+
+"redact_config"      Creates a redacted configuration file that the member can send to support
+
+"register"           Sends a support Pushover (one-time) to validate registration
+
+"send_EOD_stats"     Sends a snapshot of the EOD performance metrics
+
