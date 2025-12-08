@@ -5,11 +5,4 @@
 	{ "device_id": "84FFEBBC", "owner_name": "Ron Taubert" },
 	{ "device_id": "C3A6628F", "owner_name": "Tim Osborne" }
   ],
-  "commands": [
-    { "id": "cmd-2025-12-05-001",
-	  "device_id": "C3A6628F",
-	  "command": "send_eod_stats",
-	  "expires_local": "2025-12-08 23:59",
-	  "note": "Testing command processing logic" }
-  ]
 }
