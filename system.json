@@ -1,4 +1,6 @@
 { "schema": 1, 
+  "latest_fw": "1.0.0",
+  "latest_fw_date": "2025-12-11",
   "devices": [ 
     { "device_id": "82F3ECBA", "owner_name": "Bob Taubert" },
 	{ "device_id": "C4CE1D88", "owner_name": "Keith Roberts" },
