@@ -1,0 +1,8 @@
+{
+  "picks_url": "https://raw.githubusercontent.com/KeithCRoberts/kettle-data/main/picks.json",
+  "holidays_url": "https://raw.githubusercontent.com/KeithCRoberts/kettle-data/main/holidays.json",
+  "locks_url": "https://raw.githubusercontent.com/KeithCRoberts/kettle-data/main/locks.json",
+  "system_url": "https://raw.githubusercontent.com/KeithCRoberts/kettle-data/main/system.json",
+  "pushover_api": "ava1q2a9xfgy7ghpmao6bghura3tgz",
+  "pushover_support_user_key": "fNgX2EpA3V3wqmyzTYBfjis4C4A9GB"
+}
