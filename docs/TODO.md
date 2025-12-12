@@ -1,6 +1,9 @@
 Bugs:
 
-When Wi-Fi disconnects, switch to demo mode
+When Wi-Fi disconnects, switch to demo mode'
+
+When no Pushover user key, exit routine (don't log that a notification was sent)
+
 
 =====================================================
 
