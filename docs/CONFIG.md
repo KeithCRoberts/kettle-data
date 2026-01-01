@@ -14,8 +14,13 @@
   "notifications": {
 	  "wifi_connect": true,
 	  "new_lock": true,
+	  "lock_daily_change": {
+	    "send": true,
+		"threshold_pct": 7.5
+	  },
 	  "midday_update": true,
-	  "after_hours_update": true
+	  "after_hours_update": true,
+	  "eod_stats": false
   },
   "ntp_server": "pool.ntp.org",
   "api_keys": {
