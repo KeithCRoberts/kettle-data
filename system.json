@@ -1,12 +1,25 @@
-{ "schema": 1, 
+{
+  "schema": 1,
   "latest_fw": "1.0.0",
   "latest_fw_date": "12/12/2025",
-  "devices": [ 
-    { "device_id": "82F3ECBA", "owner_name": "Bob Taubert" },
-	{ "device_id": "C4CE1D88", "owner_name": "Keith Roberts" },
-	{ "device_id": "84FFEBBC", "owner_name": "Ron Taubert" },
-	{ "device_id": "C3A6628F", "owner_name": "Tim Osborne" },
-	{ "device_id": "2D97092D", "owner_name": "Dave Fink" },
-	{ "device_id": "075CCD6B", "owner_name": "Keith Roberts", "device_type": "Test" }
+
+  "profiles": {
+    "CYD-USBM": {
+      "display": { "invert": true, "rotation": 0 },
+      "capabilities": { }
+    },
+    "CYD-USBC": {
+      "display": { "invert": false, "rotation": 0 },
+      "capabilities": { }
+    }
+  },
+
+  "devices": [
+    { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC" },
+    { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC" },
+    { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC" },
+    { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC" },
+    { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC" },
+    { "device_id": "075CCD6B", "owner_name": "Keith Roberts", "profile": "CYD-USBM" }
   ]
 }
