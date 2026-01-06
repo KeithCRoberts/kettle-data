@@ -1,11 +1,5 @@
 { "schema": 1, 
-  "period": "2H25",
+  "period": "1H26",
   "locks": [ 
-    {
-	  "member": "Bob Taubert", 
-	  "symbol": "EYPT", 
-	  "date": "2025-12-04", 
-	  "price": 16.72
-	}
-  ] 
+  ]
 }
