@@ -1,5 +1,6 @@
 { "schema": 1, 
-  "period": "2H25",
+  "period": "XHYY",
+  "comment": "Delete this file if there are no locks",
   "locks": [ 
     {
 	  "member": "member full name", 
