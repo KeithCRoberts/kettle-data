@@ -1,13 +1,14 @@
 Bugs:
 
-When no Pushover user key, exit routine (don't log that a notification was sent)
+When no Pushover user key, exit routine (don't log that a notification was sent)  -- Done v1.1.0
 
 Not saving eTag for system.json
 
-BootCfg in kettle-firmware.ino when logged invert = 1 (s/b true)
+BootCfg in kettle-firmware.ino when logged invert = 1 (s/b true)  -- Done v1.1.0
 
-Something seems to be wiping out LittleFS - needs more investigation
+Something seems to be wiping out LittleFS - needs more investigation  -- Done v1.1.0
 
+Promoting a new locks.json file during a market refresh fails due to UI write failure (s/b startup only)
 
 =====================================================
 
@@ -39,12 +40,12 @@ Pushover
   - Add a Pushover message when a Stop & Lock gains x% during the day  --  Done v1.1.0
 
 Device Profiles
-  - Add device profile support to system.json
+  - Add device profile support to system.json  -- Done -- v1.1.0
   - Create profile variables for screen inversion & rotation
   - Cache screen inversion & rotation on startup & use if cached
   
 Splits/Acquisitions
-  - Handle splits (and reverse splits) for watchlist securities (x tendered, y issued)
+  - Handle splits (and reverse splits) for watchlist securities (x tendered, y issued)  --  Done v1.1.0
   - Handle cash acquisition
   - Handle stock acquisition (x tendered, y issued)
   - Handle cash & stock acquistion (x tendered, $ + y issued)
