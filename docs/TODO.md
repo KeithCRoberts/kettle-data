@@ -8,7 +8,7 @@ BootCfg in kettle-firmware.ino when logged invert = 1 (s/b true)  -- Done v1.1.0
 
 Something seems to be wiping out LittleFS - needs more investigation  -- Done v1.1.0
 
-Promoting a new locks.json file during a market refresh fails due to UI write failure (s/b startup only)
+Promoting a new locks.json file during a market refresh fails due to UI write failure (s/b startup only)  -- Done v1.1.0
 
 =====================================================
 
@@ -40,9 +40,9 @@ Pushover
   - Add a Pushover message when a Stop & Lock gains x% during the day  --  Done v1.1.0
 
 Device Profiles
-  - Add device profile support to system.json  -- Done -- v1.1.0
-  - Create profile variables for screen inversion & rotation
-  - Cache screen inversion & rotation on startup & use if cached
+  - Add device profile support to system.json  -- Done v1.1.0
+  - Create profile variables for screen inversion & rotation  -- Done v1.1.0
+  - Cache screen inversion & rotation on startup & use if cached  -- Done v1.1.0
   
 Splits/Acquisitions
   - Handle splits (and reverse splits) for watchlist securities (x tendered, y issued)  --  Done v1.1.0
@@ -53,3 +53,10 @@ Splits/Acquisitions
 
 System Files
   - Reorder loading of system files to eliminate reboot requirement
+  
+Development
+  - Add a 'in development' macro level flag to control file reads & other development only execution paths  --  Done v1.1.0
+  - Change 'take screenshots' from a config.json variable to a global variable controled by 'in dev' flag  --  Done v1.1.0
+  
+  
+  
