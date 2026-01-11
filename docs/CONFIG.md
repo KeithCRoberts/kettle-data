@@ -16,7 +16,8 @@
 	  "new_lock": true,
 	  "lock_daily_change": {
 	    "send": true,
-		"threshold_pct": 7.5
+		"daily_threshold": 7.5,
+		"total_threshold": 60.0
 	  },
 	  "midday_update": true,
 	  "after_hours_update": true,
