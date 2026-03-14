@@ -1,18 +1,25 @@
 Bugs:
 
-When no Pushover user key, exit routine (don't log that a notification was sent)  -- Done v1.1.0
-
 Not saving eTag for system.json
 
-BootCfg in kettle-firmware.ino when logged invert = 1 (s/b true)  -- Done v1.1.0
+Formating on end of day Pushover message truncates part of message (increase buffer)
 
-Something seems to be wiping out LittleFS - needs more investigation  -- Done v1.1.0
+Pushover API call failure - retry at least once on timeout
 
-Promoting a new locks.json file during a market refresh fails due to UI write failure (s/b startup only)  -- Done v1.1.0
 
+  
 =====================================================
 
-Enhancements:
+V1.1.0 - Enhancements:
+
+UI Changes
+  - Display all negative numbers in red (requested by Bob)
+  
+  
+  
+=====================================================
+
+V1.2.0 - Enhancements:
 
 SD card cleanup routine
   - Delete any CORE and/or log files after 30 days
@@ -24,28 +31,13 @@ Logging enhancements
 
 Statistics enhancements
   - Make sure we're capturing sprite 8-bit failures as well as sprite 4-bit failures
-  - Improve formatting on all statistics  --  Done v1.1.0
   - Use colors in Pushover message to denote warnings/errors
-  - Persist statistics to LittleFS - minimally for a day, but potentially for a week (rolling)
-  - Establish a configuration parameter to dump the persisted statistics to the log
-  - Establish warning levels for memory heap  --  Done v1.1.0
   - Check/identify when memory heap logging is before/after an operation (particularly with sprite fallbacks)
 
 Support configuration update on a web portal
-  - Add a Wi-Fi station mode if Wi-Fi can't connect  --  Done v1.1.0
-  - Create a web server when in station mode  --  Done v1.1.0
   - Create the HTML to update the configuration file through the web server
-
-Pushover
-  - Add a Pushover message when a Stop & Lock gains x% during the day  --  Done v1.1.0
-
-Device Profiles
-  - Add device profile support to system.json  -- Done v1.1.0
-  - Create profile variables for screen inversion & rotation  -- Done v1.1.0
-  - Cache screen inversion & rotation on startup & use if cached  -- Done v1.1.0
   
 Splits/Acquisitions
-  - Handle splits (and reverse splits) for watchlist securities (x tendered, y issued)  --  Done v1.1.0
   - Handle cash acquisition
   - Handle stock acquisition (x tendered, y issued)
   - Handle cash & stock acquistion (x tendered, $ + y issued)
@@ -53,10 +45,35 @@ Splits/Acquisitions
 
 System Files
   - Reorder loading of system files to eliminate reboot requirement
+
+ESP32-S3 support
+  - improved performance
+
+Battery support - enables portable use
+  - Lithium battery
+  - Onboard charging
   
-Development
-  - Add a 'in development' macro level flag to control file reads & other development only execution paths  --  Done v1.1.0
-  - Change 'take screenshots' from a config.json variable to a global variable controled by 'in dev' flag  --  Done v1.1.0
+RTC support
+  - real time clock support, not reliant on NTP syncing
   
+Touch support
+  - Capacitive touch enabled
+  - With rotation off, touch can be used to pull up a detail screen
+  - Limited configuration update capability using touch
+  
+PSRAM support
+  - improved memory / stabilization
+  
+
+
+=====================================================
+
+V2.0.0 (Kettle Pro) - Enhancements:
+
+Enhanced display support
+  - 480 x 800 landscape mode supported
+  
+Charting support
+  - performance charts for securities
   
   

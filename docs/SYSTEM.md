@@ -4,6 +4,19 @@
   "latest_fw_date": "01/21/2026",
 
   "profiles": {
+    "CYD-USBM": {
+      "display": {
+        "invert": true,
+        "rotation": 0
+      },
+      "capabilities": {
+        "mcu": "ESP32",
+        "flash_mb": 4,
+        "psram": false,
+        "touch": "resistive",
+        "sd": "spi"
+      }
+    },
     "CYD-USBC": {
       "display": {
         "invert": false,
@@ -30,28 +43,15 @@
         "touch": "capacitive",
         "sd": "sdmmc"
       }
-    },
-    "CYD-USBM": {
-      "display": {
-        "invert": true,
-        "rotation": 0
-      },
-      "capabilities": {
-        "mcu": "ESP32",
-        "flash_mb": 4,
-        "psram": false,
-        "touch": "resistive",
-        "sd": "spi"
-      }
     }
   },
+  
   "devices": [
     { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC" },
     { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC" },
     { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC" },
     { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC" },
     { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC" },
-    { "device_id": "075CCD6B", "owner_name": "Keith Roberts", "profile": "CYD-USBM", "comment": "Test device (legacy CYD)" },
-	{ "device_id": "E8C24770", "owner_name": "Keith Roberts", "profile": "CYD-USBH", "comment": "Test device (Hosyond CYD)" }
+    { "device_id": "075CCD6B", "owner_name": "Keith Roberts", "profile": "CYD-USBM" }
   ]
 }

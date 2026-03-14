@@ -1,0 +1,1 @@
+esp-coredump info_corefile -t raw -c G:\logs\CORE_6764.raw .pio\build\cyd_esp32s3\firmware.elf --gdb C:\Users\Keith\.platformio\packages\toolchain-xtensa-esp32s3\bin\xtensa-esp32s3-elf-gdb.exe
