@@ -375,6 +375,17 @@ footer{
   .payoff-val, .sp-inline .n{ font-size:18px; }
   td{ font-size:12px; }
 }
+
+a.period-dl {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--muted);
+  cursor: pointer;
+}
+a.period-dl:hover {
+  border-bottom-color: var(--text);
+}
+
 </style>
 </head>
 <body>
@@ -386,7 +397,7 @@ footer{
 <header>
   <div class="logo">K<span>·</span>ETTLE</div>
   <div class="hdr-meta">
-    <span>PERIOD: <span class="v" id="h-period">—</span></span>
+    <span>PERIOD: <a href="/history.json" id="h-period" class="v period-dl" title="Download history">—</a></span>
     <span>OWNER: <span class="v" id="h-owner">—</span></span>
     <span>UPDATED: <span class="v" id="h-updated">—</span></span>
   </div>
