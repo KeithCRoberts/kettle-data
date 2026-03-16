@@ -29,7 +29,7 @@
 body{
   background:var(--bg); color:var(--text);
   font-family:'Inter Tight',sans-serif;
-  font-size:14px; min-height:100vh; overflow-x:hidden;
+  font-size:16px; min-height:100vh; overflow-x:hidden;
 }
 
 /* ── TICKER ── */
@@ -73,7 +73,7 @@ header{
 .hdr-meta{
   display:flex; align-items:center; justify-content:center; gap:24px;
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; color:var(--muted); letter-spacing:1px;
+  font-size:11px; color:var(--muted); letter-spacing:1px;
 }
 .hdr-meta .v{ color:var(--text); }
 
@@ -108,7 +108,7 @@ header{
 .sp-inline .c{ font-size:10px; }
 
 .mkt{
-  padding:5px 14px; font-size:10px; font-weight:700;
+  padding:5px 14px; font-size:11px; font-weight:700;
   letter-spacing:2px; border-radius:4px; font-family:'JetBrains Mono',monospace;
   white-space:nowrap;
 }
@@ -239,7 +239,7 @@ header{
 }
 .c-tab{
   padding:10px 14px 10px;
-  font-size:11px; font-weight:700; letter-spacing:2px;
+  font-size:12px; font-weight:700; letter-spacing:2px;
   text-transform:uppercase; color:var(--muted);
   cursor:pointer;
   transition:color 0.15s;
@@ -249,29 +249,29 @@ header{
 .c-tab.active{ color:var(--text); }
 .c-tab-sep{
   color:var(--muted); padding:10px 2px;
-  font-size:11px; user-select:none;
+  font-size:12px; user-select:none;
 }
 .c-title{
-  font-size:11px; font-weight:700; letter-spacing:2px;
+  font-size:12px; font-weight:700; letter-spacing:2px;
   text-transform:uppercase; color:var(--text);
 }
 .c-sub{
   font-family:'JetBrains Mono',monospace;
-  font-size:9px; color:var(--muted); letter-spacing:1px;
+  font-size:10px; color:var(--muted); letter-spacing:1px;
 }
 
 /* ── TABLES ── */
 table{ width:100%; border-collapse:collapse; }
 th{
-  padding:5px 14px;
+  padding:6px 14px;
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; letter-spacing:1.5px; color:var(--muted);
+  font-size:11px; letter-spacing:1.5px; color:var(--muted);
   text-transform:uppercase; text-align:left;
   background:var(--bg3); border-bottom:1px solid var(--line);
 }
 th.r, td.r{ text-align:right; }
 td{
-  padding:8px 14px; font-size:13px;
+  padding:9px 14px; font-size:15px;
   font-family:'JetBrains Mono',monospace;
   border-top:1px solid var(--line2); color:var(--text);
 }
@@ -287,7 +287,7 @@ tr.me td:first-child{ box-shadow:inset 2px 0 0 var(--owner-ln); }
 
 /* rank cells */
 .rk{ width:26px; padding-right:4px; }
-.rk span{ font-size:11px; font-weight:700; font-family:'Inter Tight',sans-serif; color:var(--muted); }
+.rk span{ font-size:13px; font-weight:700; font-family:'Inter Tight',sans-serif; color:var(--muted); }
 .rk span.g1{ color:var(--gold); }
 .rk span.g2{ color:#94a3b8; }
 .rk span.g3{ color:#cd8b3b; }
@@ -329,7 +329,7 @@ tr.me td:first-child{ box-shadow:inset 2px 0 0 var(--owner-ln); }
 /* ── FOOTER ── */
 footer{
   border-top:1px solid var(--line); margin-top:0; padding:12px 28px;
-  font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted);
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted);
   letter-spacing:1px; display:flex; gap:24px; flex-wrap:wrap;
   justify-content:center;
   background:var(--bg2);
@@ -379,12 +379,7 @@ footer{
 a.period-dl {
   color: var(--text);
   text-decoration: none;
-  border-bottom: 1px dashed var(--muted);
   cursor: pointer;
-}
-
-a.period-dl:hover {
-  border-bottom-color: var(--text);
 }
 
 </style>
@@ -541,7 +536,7 @@ function buildSPP(d){
       <td class="r">${fmt(e.prediction,0)}</td>
       <td class="r dim">${fmt(e.pct_off)}%</td>
     </tr>`).join('');
-  return card('S&amp;P Prediction','distance from index',
+  return card('S&amp;P Prediction','',
     `<table><tr><th>#</th><th>Member</th><th class="r">Target</th><th class="r">% Off</th></tr>${rows}</table>`);
 }
 
@@ -615,7 +610,7 @@ function render(data,status){
 
   const open=status&&status.market_open;
   const mkt=document.getElementById('mkt');
-  mkt.textContent=open?'● OPEN':'○ CLOSED';
+  mkt.textContent=open?'OPEN':'○ CLOSED';
   mkt.className='mkt '+(open?'open':'closed');
 
   const pv=document.getElementById('payoff-val');
