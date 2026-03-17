@@ -124,17 +124,7 @@ header{
 .mkt.closed::before{ content:''; }
 @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.4} }
 
-/* ── GEAR BUTTON ── */
-.gear-btn{
-  background:none; border:1px solid var(--line);
-  color:var(--muted); border-radius:6px;
-  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; transition:color 0.15s, border-color 0.15s;
-  font-size:16px; flex-shrink:0;
-}
-.gear-btn:hover{ color:var(--text); border-color:var(--dim); }
-
-/* ── MODAL (payoff) ── */
+/* ── MODAL ── */
 .modal-backdrop{
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,0.75); z-index:10000;
@@ -313,120 +303,14 @@ header{
   border-bottom-color:var(--blue);
 }
 
-/* ── SETTINGS MODAL ── */
-.cfg-backdrop{
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,0.75); z-index:10002;
-  align-items:center; justify-content:center;
+.gear-btn{
+  background:none; border:1px solid var(--line);
+  color:var(--muted); border-radius:6px;
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:color 0.15s, border-color 0.15s;
+  font-size:16px; flex-shrink:0;
 }
-.cfg-backdrop.open{ display:flex; }
-.cfg-modal{
-  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
-  border:1px solid rgba(59,130,246,0.3);
-  border-radius:12px; width:92%; max-width:480px;
-  max-height:88vh; display:flex; flex-direction:column;
-  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
-  animation:modal-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
-}
-.cfg-hdr{
-  background:rgba(59,130,246,0.07); padding:18px 20px;
-  display:flex; align-items:center; justify-content:space-between;
-  border-bottom:1px solid rgba(59,130,246,0.15);
-  flex-shrink:0;
-}
-.cfg-title{
-  font-size:18px; font-weight:800; letter-spacing:-0.3px; color:var(--text);
-}
-.cfg-close{
-  font-size:18px; color:var(--muted); cursor:pointer;
-  line-height:1; padding:0 2px; transition:color 0.15s;
-}
-.cfg-close:hover{ color:var(--text); }
-.cfg-body{
-  overflow-y:auto; padding:0 0 8px;
-  flex:1;
-}
-.cfg-section{
-  padding:14px 20px 4px;
-  border-bottom:1px solid var(--line);
-}
-.cfg-section:last-child{ border-bottom:none; }
-.cfg-section-title{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px; letter-spacing:2px; color:var(--blue);
-  text-transform:uppercase; margin-bottom:12px;
-}
-.cfg-row{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:7px 0; gap:12px;
-}
-.cfg-label{
-  font-size:13px; color:var(--text); flex:1;
-}
-.cfg-hint{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px; color:var(--muted); letter-spacing:0.5px;
-  margin-top:1px;
-}
-/* toggle switch */
-.tog{
-  position:relative; width:40px; height:22px; flex-shrink:0;
-}
-.tog input{ opacity:0; width:0; height:0; position:absolute; }
-.tog-track{
-  position:absolute; inset:0;
-  background:#2a2d35; border-radius:11px;
-  cursor:pointer; transition:background 0.2s;
-}
-.tog input:checked ~ .tog-track{ background:rgba(59,130,246,0.7); }
-.tog-thumb{
-  position:absolute; top:3px; left:3px;
-  width:16px; height:16px; border-radius:50%;
-  background:var(--muted); transition:transform 0.2s, background 0.2s;
-  pointer-events:none;
-}
-.tog input:checked ~ .tog-track .tog-thumb{
-  transform:translateX(18px); background:#fff;
-}
-/* number input */
-.cfg-num{
-  width:70px; background:#0e1016;
-  border:1px solid var(--line); border-radius:5px;
-  color:var(--text); font-family:'JetBrains Mono',monospace;
-  font-size:13px; padding:5px 8px; text-align:right;
-  transition:border-color 0.15s;
-}
-.cfg-num:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
-/* select */
-.cfg-select{
-  background:#0e1016; border:1px solid var(--line);
-  border-radius:5px; color:var(--text);
-  font-family:'JetBrains Mono',monospace; font-size:11px;
-  padding:5px 8px; transition:border-color 0.15s; min-width:160px;
-}
-.cfg-select:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
-/* footer bar */
-.cfg-footer{
-  padding:14px 20px; flex-shrink:0;
-  border-top:1px solid var(--line);
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-}
-.cfg-status{
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px; color:var(--muted); letter-spacing:0.5px; flex:1;
-}
-.cfg-status.ok{ color:var(--green); }
-.cfg-status.err{ color:var(--red); }
-.cfg-save{
-  background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35);
-  color:var(--blue); border-radius:6px; padding:8px 20px;
-  font-family:'JetBrains Mono',monospace; font-size:11px;
-  font-weight:700; letter-spacing:1.5px; cursor:pointer;
-  transition:background 0.15s, border-color 0.15s;
-  white-space:nowrap;
-}
-.cfg-save:hover{ background:rgba(59,130,246,0.25); border-color:rgba(59,130,246,0.6); }
-.cfg-save:disabled{ opacity:0.4; cursor:default; }
+.gear-btn:hover{ color:var(--text); border-color:var(--dim); }
 
 /* ── CONTENT ── */
 .content{
@@ -543,6 +427,13 @@ tr.me td:first-child{ box-shadow:inset 2px 0 0 var(--owner-ln); }
 
 /* inline score bar */
 .sbar{ display:inline-flex; align-items:center; gap:7px; }
+
+/* tappable locked gain — counterfactual toggle */
+.cf-tap{
+  cursor:pointer;
+  transition:color 0.15s;
+}
+.cf-active{ color:var(--muted) !important; font-style:italic; }
 .sb{
   width:48px; height:3px; background:#45484f;
   border-radius:2px; overflow:hidden; display:inline-block; vertical-align:middle;
@@ -566,6 +457,120 @@ footer{
   grid-column:1/-1;
 }
 
+.cfg-backdrop{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.75); z-index:10002;
+  align-items:center; justify-content:center;
+}
+.cfg-backdrop.open{ display:flex; }
+.cfg-modal{
+  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px; width:92%; max-width:480px;
+  max-height:88vh; display:flex; flex-direction:column;
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
+  animation:modal-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
+}
+.cfg-hdr{
+  background:rgba(59,130,246,0.07); padding:18px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(59,130,246,0.15);
+  flex-shrink:0;
+}
+.cfg-title{
+  font-size:18px; font-weight:800; letter-spacing:-0.3px; color:var(--text);
+}
+.cfg-close{
+  font-size:18px; color:var(--muted); cursor:pointer;
+  line-height:1; padding:0 2px; transition:color 0.15s;
+}
+.cfg-close:hover{ color:var(--text); }
+.cfg-body{
+  overflow-y:auto; padding:0 0 8px;
+  flex:1;
+}
+.cfg-section{
+  padding:14px 20px 4px;
+  border-bottom:1px solid var(--line);
+}
+.cfg-section:last-child{ border-bottom:none; }
+.cfg-section-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:2px; color:var(--blue);
+  text-transform:uppercase; margin-bottom:12px;
+}
+.cfg-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:7px 0; gap:12px;
+}
+.cfg-label{
+  font-size:13px; color:var(--text); flex:1;
+}
+.cfg-hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; color:var(--muted); letter-spacing:0.5px;
+  margin-top:1px;
+}
+/* toggle switch */
+.tog{
+  position:relative; width:40px; height:22px; flex-shrink:0;
+}
+.tog input{ opacity:0; width:0; height:0; position:absolute; }
+.tog-track{
+  position:absolute; inset:0;
+  background:#2a2d35; border-radius:11px;
+  cursor:pointer; transition:background 0.2s;
+}
+.tog input:checked ~ .tog-track{ background:rgba(59,130,246,0.7); }
+.tog-thumb{
+  position:absolute; top:3px; left:3px;
+  width:16px; height:16px; border-radius:50%;
+  background:var(--muted); transition:transform 0.2s, background 0.2s;
+  pointer-events:none;
+}
+.tog input:checked ~ .tog-track .tog-thumb{
+  transform:translateX(18px); background:#fff;
+}
+/* number input */
+.cfg-num{
+  width:70px; background:#0e1016;
+  border:1px solid var(--line); border-radius:5px;
+  color:var(--text); font-family:'JetBrains Mono',monospace;
+  font-size:13px; padding:5px 8px; text-align:right;
+  transition:border-color 0.15s;
+}
+.cfg-num:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
+/* select */
+.cfg-select{
+  background:#0e1016; border:1px solid var(--line);
+  border-radius:5px; color:var(--text);
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  padding:5px 8px; transition:border-color 0.15s; min-width:160px;
+}
+.cfg-select:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
+/* footer bar */
+.cfg-footer{
+  padding:14px 20px; flex-shrink:0;
+  border-top:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.cfg-status{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--muted); letter-spacing:0.5px; flex:1;
+}
+.cfg-status.ok{ color:var(--green); }
+.cfg-status.err{ color:var(--red); }
+.cfg-save{
+  background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35);
+  color:var(--blue); border-radius:6px; padding:8px 20px;
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  font-weight:700; letter-spacing:1.5px; cursor:pointer;
+  transition:background 0.15s, border-color 0.15s;
+  white-space:nowrap;
+}
+.cfg-save:hover{ background:rgba(59,130,246,0.25); border-color:rgba(59,130,246,0.6); }
+.cfg-save:disabled{ opacity:0.4; cursor:default; }
+
 /* ── RESPONSIVE ── */
 @media (max-width:640px){
   header{
@@ -574,7 +579,7 @@ footer{
     gap:8px 12px; padding:10px 14px;
   }
   .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
-  .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
+  .mkt{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
   .hdr-meta{
     grid-column:1/-1; grid-row:2;
     flex-wrap:wrap; gap:6px 14px; font-size:9px;
@@ -653,19 +658,6 @@ a.period-dl {
   </div>
 </div>
 
-<!-- Member card -->
-<div class="mc-backdrop" id="mc-backdrop" onclick="closeMemberCard(event)">
-  <div class="mc">
-    <div class="mc-hdr">
-      <div>
-        <div class="mc-name" id="mc-name">—</div>
-      </div>
-      <span class="mc-close" onclick="closeMemberCard()">✕</span>
-    </div>
-    <div class="mc-rows" id="mc-rows"></div>
-  </div>
-</div>
-
 <!-- Settings modal -->
 <div class="cfg-backdrop" id="cfg-backdrop" onclick="closeCfg(event)">
   <div class="cfg-modal">
@@ -683,6 +675,18 @@ a.period-dl {
   </div>
 </div>
 
+<!-- Member card -->
+<div class="mc-backdrop" id="mc-backdrop" onclick="closeMemberCard(event)">
+  <div class="mc">
+    <div class="mc-hdr">
+      <div>
+        <div class="mc-name" id="mc-name">—</div>
+      </div>
+      <span class="mc-close" onclick="closeMemberCard()">✕</span>
+    </div>
+    <div class="mc-rows" id="mc-rows"></div>
+  </div>
+</div>
 <div class="content">
   <div class="floor" id="floor">
     <div class="loading">Loading market data…</div>
@@ -796,16 +800,47 @@ function buildSPP(d){
     `<table><tr><th>#</th><th>Member</th><th class="r">Target</th><th class="r">% Off</th></tr>${rows}</table>`);
 }
 
+function cfToggle(el){
+  const locked = el.dataset.locked;
+  const live   = el.dataset.live;
+  const showing = el.dataset.showing || 'locked';
+  if(showing === 'locked'){
+    el.textContent = live + ' ↺';
+    el.dataset.showing = 'live';
+    el.classList.add('cf-active');
+  } else {
+    el.textContent = locked;
+    el.dataset.showing = 'locked';
+    el.classList.remove('cf-active');
+  }
+}
+
 function buildPick(title,arr){
-  const rows=arr.map((e,i)=>`
+  const rows=arr.map((e,i)=>{
+    // For locked lock entries with a live price, make the gain cell tappable
+    const hasCf = e.locked && e.live_price != null && e.open != null && e.open > 0;
+    const cfPct = hasCf ? ((e.live_price - e.open) / e.open * 100) : null;
+    const gainCell = hasCf
+      ? `<td class="r ${pc(e.pct_gain)}">
+           <span class="cf-tap"
+             data-locked="${fmtP(e.pct_gain)}"
+             data-live="${fmtP(cfPct)}"
+             title="Tap to see unlocked gain"
+             onclick="cfToggle(this)">
+             ${fmtP(e.pct_gain)}
+           </span>
+         </td>`
+      : `<td class="r ${pc(e.pct_gain)}">${fmtP(e.pct_gain)}</td>`;
+    return `
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
       <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td><a class="sym-link" href="https://finance.yahoo.com/quote/${e.ticker}" target="_blank" rel="noopener">${e.ticker}</a>${e.locked?'<span class="lk">LK</span>':''}${e.split_applied?'<span class="sp-badge">SP</span>':''}</td>
       <td class="r dim pick-open">${fmt(e.open)}</td>
       <td class="r">${fmt(e.price)}</td>
-      <td class="r ${pc(e.pct_gain)}">${fmtP(e.pct_gain)}</td>
-    </tr>`).join('');
+      ${gainCell}
+    </tr>`;
+  }).join('');
   return card(title,'',
     `<table><tr><th>#</th><th>Member</th><th>Ticker</th><th class="r pick-open">Open</th><th class="r">Price</th><th class="r">Gain</th></tr>${rows}</table>`);
 }
