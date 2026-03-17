@@ -124,7 +124,17 @@ header{
 .mkt.closed::before{ content:''; }
 @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.4} }
 
-/* ── MODAL ── */
+/* ── GEAR BUTTON ── */
+.gear-btn{
+  background:none; border:1px solid var(--line);
+  color:var(--muted); border-radius:6px;
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:color 0.15s, border-color 0.15s;
+  font-size:16px; flex-shrink:0;
+}
+.gear-btn:hover{ color:var(--text); border-color:var(--dim); }
+
+/* ── MODAL (payoff) ── */
 .modal-backdrop{
   display:none; position:fixed; inset:0;
   background:rgba(0,0,0,0.75); z-index:10000;
@@ -303,6 +313,121 @@ header{
   border-bottom-color:var(--blue);
 }
 
+/* ── SETTINGS MODAL ── */
+.cfg-backdrop{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.75); z-index:10002;
+  align-items:center; justify-content:center;
+}
+.cfg-backdrop.open{ display:flex; }
+.cfg-modal{
+  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px; width:92%; max-width:480px;
+  max-height:88vh; display:flex; flex-direction:column;
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
+  animation:modal-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
+}
+.cfg-hdr{
+  background:rgba(59,130,246,0.07); padding:18px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(59,130,246,0.15);
+  flex-shrink:0;
+}
+.cfg-title{
+  font-size:18px; font-weight:800; letter-spacing:-0.3px; color:var(--text);
+}
+.cfg-close{
+  font-size:18px; color:var(--muted); cursor:pointer;
+  line-height:1; padding:0 2px; transition:color 0.15s;
+}
+.cfg-close:hover{ color:var(--text); }
+.cfg-body{
+  overflow-y:auto; padding:0 0 8px;
+  flex:1;
+}
+.cfg-section{
+  padding:14px 20px 4px;
+  border-bottom:1px solid var(--line);
+}
+.cfg-section:last-child{ border-bottom:none; }
+.cfg-section-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:2px; color:var(--blue);
+  text-transform:uppercase; margin-bottom:12px;
+}
+.cfg-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:7px 0; gap:12px;
+}
+.cfg-label{
+  font-size:13px; color:var(--text); flex:1;
+}
+.cfg-hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; color:var(--muted); letter-spacing:0.5px;
+  margin-top:1px;
+}
+/* toggle switch */
+.tog{
+  position:relative; width:40px; height:22px; flex-shrink:0;
+}
+.tog input{ opacity:0; width:0; height:0; position:absolute; }
+.tog-track{
+  position:absolute; inset:0;
+  background:#2a2d35; border-radius:11px;
+  cursor:pointer; transition:background 0.2s;
+}
+.tog input:checked ~ .tog-track{ background:rgba(59,130,246,0.7); }
+.tog-thumb{
+  position:absolute; top:3px; left:3px;
+  width:16px; height:16px; border-radius:50%;
+  background:var(--muted); transition:transform 0.2s, background 0.2s;
+  pointer-events:none;
+}
+.tog input:checked ~ .tog-track .tog-thumb{
+  transform:translateX(18px); background:#fff;
+}
+/* number input */
+.cfg-num{
+  width:70px; background:#0e1016;
+  border:1px solid var(--line); border-radius:5px;
+  color:var(--text); font-family:'JetBrains Mono',monospace;
+  font-size:13px; padding:5px 8px; text-align:right;
+  transition:border-color 0.15s;
+}
+.cfg-num:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
+/* select */
+.cfg-select{
+  background:#0e1016; border:1px solid var(--line);
+  border-radius:5px; color:var(--text);
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  padding:5px 8px; transition:border-color 0.15s; min-width:160px;
+}
+.cfg-select:focus{ outline:none; border-color:rgba(59,130,246,0.5); }
+/* footer bar */
+.cfg-footer{
+  padding:14px 20px; flex-shrink:0;
+  border-top:1px solid var(--line);
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.cfg-status{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--muted); letter-spacing:0.5px; flex:1;
+}
+.cfg-status.ok{ color:var(--green); }
+.cfg-status.err{ color:var(--red); }
+.cfg-save{
+  background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35);
+  color:var(--blue); border-radius:6px; padding:8px 20px;
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  font-weight:700; letter-spacing:1.5px; cursor:pointer;
+  transition:background 0.15s, border-color 0.15s;
+  white-space:nowrap;
+}
+.cfg-save:hover{ background:rgba(59,130,246,0.25); border-color:rgba(59,130,246,0.6); }
+.cfg-save:disabled{ opacity:0.4; cursor:default; }
+
 /* ── CONTENT ── */
 .content{
   max-width:1200px; margin:0 auto;
@@ -449,7 +574,7 @@ footer{
     gap:8px 12px; padding:10px 14px;
   }
   .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
-  .mkt{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
+  .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
   .hdr-meta{
     grid-column:1/-1; grid-row:2;
     flex-wrap:wrap; gap:6px 14px; font-size:9px;
@@ -506,7 +631,10 @@ a.period-dl {
     <div class="n" id="sp-n">——</div>
     <div class="c" id="sp-c">—</div>
   </div>
-  <div class="mkt closed" id="mkt">—</div>
+  <div class="hdr-controls" style="display:flex;align-items:center;gap:8px;">
+    <div class="mkt closed" id="mkt">—</div>
+    <button class="gear-btn" onclick="openSettings()" title="Settings">⚙</button>
+  </div>
 </header>
 
 <!-- Payoff + Bet Summary modal -->
@@ -537,6 +665,24 @@ a.period-dl {
     <div class="mc-rows" id="mc-rows"></div>
   </div>
 </div>
+
+<!-- Settings modal -->
+<div class="cfg-backdrop" id="cfg-backdrop" onclick="closeCfg(event)">
+  <div class="cfg-modal">
+    <div class="cfg-hdr">
+      <span class="cfg-title">Settings</span>
+      <span class="cfg-close" onclick="closeCfg()">✕</span>
+    </div>
+    <div class="cfg-body" id="cfg-body">
+      <div class="loading">Loading…</div>
+    </div>
+    <div class="cfg-footer">
+      <span class="cfg-status" id="cfg-status"></span>
+      <button class="cfg-save" id="cfg-save" onclick="saveSettings()">SAVE</button>
+    </div>
+  </div>
+</div>
+
 <div class="content">
   <div class="floor" id="floor">
     <div class="loading">Loading market data…</div>
@@ -770,6 +916,189 @@ document.addEventListener('keydown', e => {
 function ownerName(nickname, isOwner){
   if(!isOwner) return nickname;
   return `<span class="owner-name" onclick="openMemberCard()">${nickname}</span>`;
+}
+
+// ── SETTINGS ─────────────────────────────────────────────────
+let g_cfgData = null;
+
+function openSettings(){
+  document.getElementById('cfg-backdrop').classList.add('open');
+  document.getElementById('cfg-status').textContent = '';
+  document.getElementById('cfg-status').className = 'cfg-status';
+  document.getElementById('cfg-body').innerHTML = '<div class="loading">Loading…</div>';
+  fetch('/api/config')
+    .then(r => r.json())
+    .then(d => { g_cfgData = d; renderSettings(d); })
+    .catch(() => {
+      document.getElementById('cfg-body').innerHTML =
+        '<div class="loading">Failed to load settings.</div>';
+    });
+}
+
+function closeCfg(e){
+  if(e && e.target !== document.getElementById('cfg-backdrop')) return;
+  document.getElementById('cfg-backdrop').classList.remove('open');
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.getElementById('cfg-backdrop').classList.remove('open');
+});
+
+function tog(id, checked){
+  return `<label class="tog">
+    <input type="checkbox" id="${id}" ${checked?'checked':''}>
+    <span class="tog-track"><span class="tog-thumb"></span></span>
+  </label>`;
+}
+function numInput(id, val, min, max, step){
+  return `<input class="cfg-num" type="number" id="${id}"
+    value="${val}" min="${min}" max="${max}" step="${step||1}">`;
+}
+
+function renderSettings(d){
+  const n = d.notifications;
+  const ldc = n.lock_daily_change;
+  const tzOpts = (d.supported_timezones||[])
+    .map(z => `<option value="${z}" ${z===d.timezone?'selected':''}>${z}</option>`)
+    .join('');
+
+  document.getElementById('cfg-body').innerHTML = `
+    <div class="cfg-section">
+      <div class="cfg-section-title">General</div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Mute audio</div></div>
+        ${tog('cfg-muted', d.muted)}
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Timezone</div></div>
+        <select class="cfg-select" id="cfg-tz">${tzOpts}</select>
+      </div>
+    </div>
+
+    <div class="cfg-section">
+      <div class="cfg-section-title">Display Rotation</div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Auto-rotate</div></div>
+        ${tog('cfg-rot-enabled', d.rotation.enabled)}
+      </div>
+      <div class="cfg-row">
+        <div>
+          <div class="cfg-label">Grid dwell</div>
+          <div class="cfg-hint">seconds on summary grid</div>
+        </div>
+        ${numInput('cfg-grid-delay', d.rotation.grid_delay, 10, 300)}
+      </div>
+      <div class="cfg-row">
+        <div>
+          <div class="cfg-label">View dwell</div>
+          <div class="cfg-hint">seconds on each category</div>
+        </div>
+        ${numInput('cfg-view-delay', d.rotation.view_delay, 5, 120)}
+      </div>
+    </div>
+
+    <div class="cfg-section">
+      <div class="cfg-section-title">Pushover Notifications</div>
+      <div class="cfg-row">
+        <div>
+          <div class="cfg-label">Pushover</div>
+          <div class="cfg-hint">${d.pushover_configured ? 'configured' : 'not configured'}</div>
+        </div>
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Wi-Fi connected</div></div>
+        ${tog('cfg-n-wifi', n.wifi_connect)}
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">New lock declared</div></div>
+        ${tog('cfg-n-lock', n.new_lock)}
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Midday standings</div></div>
+        ${tog('cfg-n-midday', n.midday_update)}
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">After-hours standings</div></div>
+        ${tog('cfg-n-afterhours', n.after_hours_update)}
+      </div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">End-of-day stats</div></div>
+        ${tog('cfg-n-eod', n.eod_stats)}
+      </div>
+    </div>
+
+    <div class="cfg-section">
+      <div class="cfg-section-title">Lock Change Alerts</div>
+      <div class="cfg-row">
+        <div><div class="cfg-label">Enable alerts</div></div>
+        ${tog('cfg-ldc-send', ldc.send)}
+      </div>
+      <div class="cfg-row">
+        <div>
+          <div class="cfg-label">Daily move threshold</div>
+          <div class="cfg-hint">% change in a single day</div>
+        </div>
+        ${numInput('cfg-ldc-daily', ldc.daily_threshold, 0, 100, 0.5)}
+      </div>
+      <div class="cfg-row">
+        <div>
+          <div class="cfg-label">Total move threshold</div>
+          <div class="cfg-hint">% change from lock price</div>
+        </div>
+        ${numInput('cfg-ldc-total', ldc.total_threshold, 0, 500, 1)}
+      </div>
+    </div>`;
+}
+
+function collectSettings(){
+  const get = id => document.getElementById(id);
+  return {
+    timezone:  get('cfg-tz').value,
+    muted:     get('cfg-muted').checked,
+    rotation: {
+      enabled:    get('cfg-rot-enabled').checked,
+      grid_delay: parseInt(get('cfg-grid-delay').value, 10),
+      view_delay: parseInt(get('cfg-view-delay').value, 10),
+    },
+    notifications: {
+      wifi_connect:       get('cfg-n-wifi').checked,
+      new_lock:           get('cfg-n-lock').checked,
+      midday_update:      get('cfg-n-midday').checked,
+      after_hours_update: get('cfg-n-afterhours').checked,
+      eod_stats:          get('cfg-n-eod').checked,
+      lock_daily_change: {
+        send:            get('cfg-ldc-send').checked,
+        daily_threshold: parseFloat(get('cfg-ldc-daily').value),
+        total_threshold: parseFloat(get('cfg-ldc-total').value),
+      }
+    }
+  };
+}
+
+async function saveSettings(){
+  const btn = document.getElementById('cfg-save');
+  const status = document.getElementById('cfg-status');
+  btn.disabled = true;
+  status.textContent = 'Saving…';
+  status.className = 'cfg-status';
+  try {
+    const r = await fetch('/api/config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(collectSettings())
+    });
+    const j = await r.json();
+    if(j.ok){
+      status.textContent = 'Saved.';
+      status.className = 'cfg-status ok';
+    } else {
+      status.textContent = j.error || 'Save failed.';
+      status.className = 'cfg-status err';
+    }
+  } catch {
+    status.textContent = 'Network error.';
+    status.className = 'cfg-status err';
+  }
+  btn.disabled = false;
 }
 
 // ── RENDER ───────────────────────────────────────────────────
