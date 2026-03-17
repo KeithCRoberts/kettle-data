@@ -39,14 +39,14 @@ body{
 }
 .ticker-track{
   display:flex;
-  animation:scroll-left 90s linear infinite;
+  animation:scroll-left 105s linear infinite;
   white-space:nowrap;
 }
 @keyframes scroll-left{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
 .ticker-item{
   color:rgba(255,255,255,0.92);
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; font-weight:500;
+  font-size:12px; font-weight:500;
   padding:0 20px; letter-spacing:0.5px;
 }
 .ticker-item .t-pos{ color:#86efac; font-weight:600; }
@@ -127,33 +127,35 @@ header{
 /* ── MODAL ── */
 .modal-backdrop{
   display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,0.8); z-index:10000;
+  background:rgba(0,0,0,0.75); z-index:10000;
   align-items:center; justify-content:center;
 }
 .modal-backdrop.open{ display:flex; }
 .modal{
-  background:var(--bg2); border:1px solid var(--line);
-  border-radius:10px; max-width:420px; width:92%;
+  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px; max-width:420px; width:92%;
   overflow:hidden;
-  animation:modal-in 0.15s ease;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  animation:modal-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
 }
 @keyframes modal-in{
-  from{ opacity:0; transform:scale(0.96) translateY(8px); }
+  from{ opacity:0; transform:scale(0.88) translateY(12px); }
   to{   opacity:1; transform:scale(1)    translateY(0); }
 }
 .modal-hdr{
-  background:var(--bg3); padding:14px 18px;
+  background:rgba(59,130,246,0.07); padding:18px 20px;
   display:flex; align-items:center; justify-content:space-between;
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid rgba(59,130,246,0.15);
 }
 .modal-title{
-  font-size:11px; font-weight:700; letter-spacing:3px;
-  text-transform:uppercase; color:var(--text);
+  font-size:22px; font-weight:800; letter-spacing:-0.3px;
+  text-transform:none; color:var(--text);
 }
 .modal-owner{
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; color:var(--muted); letter-spacing:1px;
+  font-size:10px; color:var(--blue); letter-spacing:1.5px;
+  text-transform:uppercase;
 }
 .modal-close{
   font-size:18px; color:var(--muted); cursor:pointer;
@@ -162,9 +164,9 @@ header{
 .modal-close:hover{ color:var(--text); }
 
 .modal-net{
-  padding:16px 18px;
+  padding:16px 20px;
   display:flex; align-items:center; justify-content:space-between;
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid rgba(37,38,40,0.6);
 }
 .modal-net-label{
   font-family:'JetBrains Mono',monospace;
@@ -177,18 +179,18 @@ header{
 /* shared modal table style */
 .modal table{ width:100%; border-collapse:collapse; }
 .modal th{
-  padding:5px 18px;
+  padding:5px 20px;
   font-family:'JetBrains Mono',monospace;
   font-size:9px; letter-spacing:1.5px; color:var(--muted);
   text-transform:uppercase; text-align:left;
-  background:var(--bg3); border-bottom:1px solid var(--line);
+  background:rgba(59,130,246,0.04); border-bottom:1px solid rgba(37,38,40,0.6);
 }
 .modal th.r, .modal td.r{ text-align:right; }
 .modal td{
-  padding:7px 18px;
+  padding:9px 20px;
   font-family:'JetBrains Mono',monospace;
-  font-size:11px; color:var(--text);
-  border-top:1px solid var(--line2);
+  font-size:13px; color:var(--text);
+  border-top:1px solid rgba(37,38,40,0.5);
 }
 .modal td.pos{ color:var(--green); }
 .modal td.neg{ color:var(--red); }
@@ -197,10 +199,108 @@ header{
 .modal tr.me td:first-child{ box-shadow:inset 2px 0 0 var(--owner-ln); }
 
 .modal-footer{
-  padding:8px 18px;
+  padding:10px 20px 14px;
   font-family:'JetBrains Mono',monospace;
   font-size:9px; color:var(--muted); letter-spacing:1px;
-  border-top:1px solid var(--line); text-align:center;
+  border-top:1px solid rgba(37,38,40,0.5); text-align:center;
+}
+
+/* ── MEMBER CARD ── */
+.mc-backdrop{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.75); z-index:10001;
+  align-items:center; justify-content:center;
+}
+.mc-backdrop.open{ display:flex; }
+
+.mc{
+  width:340px; max-width:92%;
+  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px; overflow:hidden;
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
+  animation:mc-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes mc-in{
+  from{ opacity:0; transform:scale(0.88) translateY(12px); }
+  to{   opacity:1; transform:scale(1)    translateY(0); }
+}
+
+.mc-hdr{
+  padding:18px 20px 14px;
+  background:rgba(59,130,246,0.07);
+  border-bottom:1px solid rgba(59,130,246,0.15);
+  display:flex; align-items:flex-start; justify-content:space-between;
+}
+.mc-name{
+  font-size:22px; font-weight:800; letter-spacing:-0.3px;
+  color:var(--text); line-height:1;
+}
+.mc-period{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--blue); letter-spacing:1.5px;
+  text-transform:uppercase; margin-top:5px;
+}
+.mc-close{
+  font-size:18px; color:var(--muted); cursor:pointer;
+  line-height:1; padding:0 2px; transition:color 0.15s;
+  margin-top:2px;
+}
+.mc-close:hover{ color:var(--text); }
+
+.mc-rows{ padding:14px 0; }
+
+.mc-row{
+  display:grid;
+  grid-template-columns: 90px 28px 1fr 52px;
+  align-items:center;
+  gap:0 8px;
+  padding:9px 20px;
+  border-bottom:1px solid rgba(37,38,40,0.5);
+}
+.mc-row:last-child{ border-bottom:none; }
+
+.mc-cat{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; letter-spacing:1.5px; color:var(--muted);
+  text-transform:uppercase;
+}
+.mc-rank{
+  font-size:15px; font-weight:800;
+  font-family:'Inter Tight',sans-serif;
+  text-align:center;
+}
+.mc-rank.g1{ color:var(--gold); }
+.mc-rank.g2{ color:#94a3b8; }
+.mc-rank.g3{ color:#cd8b3b; }
+.mc-rank.g4{ color:var(--muted); }
+
+.mc-bar-wrap{
+  display:flex; align-items:center; gap:7px;
+}
+.mc-val{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; white-space:nowrap; min-width:62px; text-align:right;
+}
+.mc-sb{
+  flex:1; height:3px; background:#2a2d35;
+  border-radius:2px; overflow:hidden;
+}
+.mc-sbf{
+  display:block; height:100%; border-radius:2px; transition:width 0.3s ease;
+}
+.mc-sbf.pos{ background:var(--green); }
+.mc-sbf.neg{ background:var(--red); }
+
+/* make owner names clickable wherever they appear */
+.owner-name{
+  cursor:pointer;
+  border-bottom:1px dotted rgba(59,130,246,0.4);
+  transition:color 0.15s, border-color 0.15s;
+}
+.owner-name:hover{
+  color:var(--blue);
+  border-bottom-color:var(--blue);
 }
 
 /* ── CONTENT ── */
@@ -367,7 +467,7 @@ footer{
   th{ padding:4px 10px; font-size:10px; }
   td{ padding:6px 10px; font-size:13px; }
   .pick-open{ display:none; }
-  .ticker-item{ padding:0 12px; font-size:9px; }
+  .ticker-item{ padding:0 12px; font-size:11px; }
   footer{ padding:8px 14px; gap:12px; font-size:9px; }
 }
 
@@ -394,7 +494,7 @@ a.period-dl {
   <div class="logo">K<span>·</span>ETTLE</div>
   <div class="hdr-meta">
     <span>PERIOD: <a href="/history.json" id="h-period" class="v period-dl" title="Download history">—</a></span>
-    <span>OWNER: <span class="v" id="h-owner">—</span></span>
+    <span>OWNER: <span class="v owner-name" id="h-owner" onclick="openMemberCard()">—</span></span>
     <span>UPDATED: <span class="v" id="h-updated">—</span></span>
   </div>
   <div class="payoff-hero" id="payoff-hero" onclick="openModal()">
@@ -414,7 +514,6 @@ a.period-dl {
   <div class="modal">
     <div class="modal-hdr">
       <span class="modal-title">Payoff Detail</span>
-      <span class="modal-owner" id="modal-owner">—</span>
       <span class="modal-close" onclick="closeModal()">✕</span>
     </div>
     <div class="modal-net">
@@ -426,7 +525,18 @@ a.period-dl {
   </div>
 </div>
 
-<!-- Main content -->
+<!-- Member card -->
+<div class="mc-backdrop" id="mc-backdrop" onclick="closeMemberCard(event)">
+  <div class="mc">
+    <div class="mc-hdr">
+      <div>
+        <div class="mc-name" id="mc-name">—</div>
+      </div>
+      <span class="mc-close" onclick="closeMemberCard()">✕</span>
+    </div>
+    <div class="mc-rows" id="mc-rows"></div>
+  </div>
+</div>
 <div class="content">
   <div class="floor" id="floor">
     <div class="loading">Loading market data…</div>
@@ -471,7 +581,7 @@ function lbTable(d){
   const rows=d.leaderboard.map((e,i)=>`
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
-      <td class="${e.is_owner?'hi':''}">${e.nickname}</td>
+      <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td class="r gold">${e.points}</td>
       <td class="r"><span class="sbar"><span class="${pc(e.basket_pct)}">${fmt(e.basket_pct)}%</span>${bar(e.basket_pct,mx)}</span></td>
     </tr>`).join('');
@@ -483,7 +593,7 @@ function betTable(d){
   const rows=sorted.map((e,i)=>`
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
-      <td class="${e.is_owner?'hi':''}">${e.nickname}</td>
+      <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td class="r ${e.bets>=0?'pos':'neg'}">${fmtD(e.bets)}</td>
       <td class="r ${e.fines!==0?'neg':'dim'}">${e.fines!==0?fmtD(e.fines):'—'}</td>
       <td class="r ${pc(e.total)}">${fmtD(e.total)}</td>
@@ -532,7 +642,7 @@ function buildSPP(d){
   const rows=d.sp_pred.map((e,i)=>`
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
-      <td class="${e.is_owner?'hi':''}">${e.nickname}</td>
+      <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td class="r">${fmt(e.prediction,0)}</td>
       <td class="r dim">${fmt(e.pct_off)}%</td>
     </tr>`).join('');
@@ -544,7 +654,7 @@ function buildPick(title,arr){
   const rows=arr.map((e,i)=>`
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
-      <td class="${e.is_owner?'hi':''}">${e.nickname}</td>
+      <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td><a class="sym-link" href="https://finance.yahoo.com/quote/${e.ticker}" target="_blank" rel="noopener">${e.ticker}</a>${e.locked?'<span class="lk">LK</span>':''}${e.split_applied?'<span class="sp-badge">SP</span>':''}</td>
       <td class="r dim pick-open">${fmt(e.open)}</td>
       <td class="r">${fmt(e.price)}</td>
@@ -559,7 +669,7 @@ function buildBasket(d){
   const rows=d.basket.map((e,i)=>`
     <tr class="${e.is_owner?'me':''}">
       ${rk(i)}
-      <td class="${e.is_owner?'hi':''}">${e.nickname}</td>
+      <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td class="dim">${e.tickers.split('/').map(s=>`<a class="sym-link" href="https://finance.yahoo.com/quote/${s}" target="_blank" rel="noopener">${s}</a>`).join('<span class="sym-sep">/</span>')}</td>
       <td class="r"><span class="sbar"><span class="${pc(e.pct_gain)}">${fmtP(e.pct_gain)}</span>${bar(e.pct_gain,mx)}</span></td>
     </tr>`).join('');
@@ -574,7 +684,6 @@ function openModal(){
   if(!g_data) return;
   const p=g_data.payoff;
   const m=g_data.meta;
-  document.getElementById('modal-owner').textContent=m.owner_nick;
   document.getElementById('modal-net').textContent=fmtD(p.total);
   document.getElementById('modal-net').className='modal-net-val '+pc(p.total);
   document.getElementById('modal-items').innerHTML=
@@ -589,6 +698,79 @@ function closeModal(e){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape') document.getElementById('modal-backdrop').classList.remove('open');
 });
+
+// ── MEMBER CARD ─────────────────────────────────────────────
+
+function openMemberCard(){
+  if(!g_data) return;
+  const d = g_data;
+  const m = d.meta;
+
+  document.getElementById('mc-name').textContent   = m.owner_nick;
+
+  // Find owner's rank + value in each category
+  // Returns {rank, val, valStr, max} where max is for bar scaling per-category
+  function ownerEntry(arr, valKey){
+    const idx = arr.findIndex(e => e.is_owner);
+    if(idx < 0) return null;
+    const val = arr[idx][valKey];
+    const max = Math.max(...arr.map(e => Math.abs(e[valKey] ?? 0)));
+    return { rank: idx + 1, val, max };
+  }
+
+  const cats = [
+    { label:'Leaderboard', entry: ownerEntry(d.leaderboard, 'points'),
+      fmtVal: v => v + ' pts', noBar: false, fixedMax: 35 },
+    { label:'Gainer',      entry: ownerEntry(d.gainer,      'pct_gain'),
+      fmtVal: v => fmtP(v) },
+    { label:'Loser',       entry: ownerEntry(d.loser,       'pct_gain'),
+      fmtVal: v => fmtP(v) },
+    { label:'Lock',        entry: ownerEntry(d.lock,        'pct_gain'),
+      fmtVal: v => fmtP(v) },
+    { label:'Basket',      entry: ownerEntry(d.basket,      'pct_gain'),
+      fmtVal: v => fmtP(v) },
+  ];
+
+  const rankCls = r => r===1?'g1':r===2?'g2':r===3?'g3':'g4';
+
+  const rows = cats.map(c => {
+    if(!c.entry) return '';
+    const { rank, val, max } = c.entry;
+    const scaleMax = c.fixedMax !== undefined ? c.fixedMax : max;
+    const pct   = (scaleMax > 0) ? Math.min(Math.abs(val) / scaleMax * 100, 100) : 0;
+    const sign  = val >= 0 ? 'pos' : 'neg';
+    const barCls = c.fixedMax !== undefined ? 'pos' : sign;  // points bar always green
+    const vStr  = c.fmtVal(val);
+    const barHtml = c.noBar
+      ? `<span class="mc-sb"></span>`
+      : `<span class="mc-sb"><span class="mc-sbf ${barCls}" style="width:${pct}%"></span></span>`;
+    return `<div class="mc-row">
+      <span class="mc-cat">${c.label}</span>
+      <span class="mc-rank ${rankCls(rank)}">#${rank}</span>
+      <div class="mc-bar-wrap">
+        ${barHtml}
+      </div>
+      <span class="mc-val ${c.noBar ? 'gold' : sign}">${vStr}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('mc-rows').innerHTML = rows;
+  document.getElementById('mc-backdrop').classList.add('open');
+}
+
+function closeMemberCard(e){
+  if(e && e.target !== document.getElementById('mc-backdrop')) return;
+  document.getElementById('mc-backdrop').classList.remove('open');
+}
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.getElementById('mc-backdrop').classList.remove('open');
+});
+
+// Wrap an owner name in a clickable span
+function ownerName(nickname, isOwner){
+  if(!isOwner) return nickname;
+  return `<span class="owner-name" onclick="openMemberCard()">${nickname}</span>`;
+}
 
 // ── RENDER ───────────────────────────────────────────────────
 function render(data,status){
