@@ -36,6 +36,7 @@ body{
 .ticker-wrap{
   background: linear-gradient(90deg,var(--blue) 0%,#6366f1 40%,#8b5cf6 70%,#a855f7 100%);
   overflow:hidden; height:26px; display:flex; align-items:center;
+  position:sticky; top:0; z-index:20;
 }
 .ticker-track{
   display:flex;
@@ -62,7 +63,7 @@ header{
   padding:14px 28px;
   border-bottom:1px solid var(--line);
   background:var(--bg2);
-  position:relative; z-index:10;
+  position:sticky; top:26px; z-index:19;
 }
 .logo{
   font-size:22px; font-weight:900; letter-spacing:4px;
@@ -306,9 +307,9 @@ header{
 .gear-btn{
   background:none; border:1px solid var(--line);
   color:var(--muted); border-radius:6px;
-  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  width:46px; height:46px; display:flex; align-items:center; justify-content:center;
   cursor:pointer; transition:color 0.15s, border-color 0.15s;
-  font-size:16px; flex-shrink:0;
+  font-size:20px; flex-shrink:0;
 }
 .gear-btn:hover{ color:var(--text); border-color:var(--dim); }
 
@@ -572,6 +573,18 @@ footer{
 .cfg-save:disabled{ opacity:0.4; cursor:default; }
 
 /* ── RESPONSIVE ── */
+
+/* ── TABLET (641px–1024px) ── */
+@media (min-width:641px) and (max-width:1024px){
+  .content{ padding:12px 14px 32px; }
+  .floor{ gap:8px; }
+  th{ padding:5px 10px; font-size:10px; }
+  td{ padding:7px 10px; font-size:13px; }
+  .pick-open{ display:none; }
+  .basket-bar{ display:none; }
+  header{ padding:12px 16px; gap:12px; }
+}
+
 @media (max-width:640px){
   header{
     grid-template-columns:1fr auto;
@@ -579,7 +592,8 @@ footer{
     gap:8px 12px; padding:10px 14px;
   }
   .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
-  .mkt{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
+  .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
+  .gear-btn{ width:36px; height:36px; font-size:16px; }
   .hdr-meta{
     grid-column:1/-1; grid-row:2;
     flex-wrap:wrap; gap:6px 14px; font-size:9px;
@@ -852,7 +866,7 @@ function buildBasket(d){
       ${rk(i)}
       <td class="${e.is_owner?'hi':''}">${ownerName(e.nickname, e.is_owner)}</td>
       <td class="dim">${e.tickers.split('/').map(s=>`<a class="sym-link" href="https://finance.yahoo.com/quote/${s}" target="_blank" rel="noopener">${s}</a>`).join('<span class="sym-sep">/</span>')}</td>
-      <td class="r"><span class="sbar"><span class="${pc(e.pct_gain)}">${fmtP(e.pct_gain)}</span>${bar(e.pct_gain,mx)}</span></td>
+      <td class="r"><span class="sbar"><span class="${pc(e.pct_gain)}">${fmtP(e.pct_gain)}</span><span class="basket-bar">${bar(e.pct_gain,mx)}</span></span></td>
     </tr>`).join('');
   return card('Basket','3-stock average',
     `<table><tr><th>#</th><th>Member</th><th>Picks</th><th class="r">Avg Gain</th></tr>${rows}</table>`);
