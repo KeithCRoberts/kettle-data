@@ -226,18 +226,39 @@ const zeroLinePlugin = {
 };
 Chart.register(zeroLinePlugin);
 
+// ── TRADING DAY LABEL BUILDER ────────────────────────────────
+// Generates an array of ISO date strings (YYYY-MM-DD) for every
+// weekday from periodStart through periodEnd inclusive.
+// Weekend gaps are simply absent — the category scale spaces all
+// labels evenly, so Mon→Tue is the same width as Thu→Fri.
+// This avoids needing a time-scale adapter entirely.
+function buildTradingDayLabels(periodStart, periodEnd) {
+  const labels = [];
+  if (!periodStart || !periodEnd) return labels;
+  // Parse as local noon to avoid DST edge cases shifting the date
+  const cur = new Date(periodStart + 'T12:00:00');
+  const end = new Date(periodEnd   + 'T12:00:00');
+  while (cur <= end) {
+    const dow = cur.getDay();
+    if (dow !== 0 && dow !== 6) {          // skip Sunday (0) and Saturday (6)
+      labels.push(cur.toISOString().slice(0, 10));
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  return labels;
+}
+
 // ── SHARED CHART OPTIONS FACTORY ─────────────────────────────
 // Returns a complete Chart.js options object for a line chart.
-// Callers supply:
 //   formatValue(v)  — formats a y-axis number for ticks + tooltips
-//   reverseY        — true for Loser (more negative = better = up) and Rank
-//   extraOptions    — shallow-merged into the returned options object
-function makeOptions(formatValue, reverseY, extraOptions) {
-  return Object.assign({
+//   reverseY        — true for Loser and Rank (better value at top)
+//   extraPlugins    — merged into options.plugins (zeroLine, etc.)
+function makeOptions(formatValue, reverseY, periodStart, periodEnd, extraPlugins) {
+  return {
     responsive: true,
     maintainAspectRatio: false,
     animation: { duration: 400 },
-    plugins: {
+    plugins: Object.assign({
       legend: { display: false },
       zeroLine: false,
       tooltip: {
@@ -250,12 +271,19 @@ function makeOptions(formatValue, reverseY, extraOptions) {
         bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
         padding: 10,
         callbacks: {
+          // Show date as M/D in tooltip title
+          title(items) {
+            if (!items.length) return '';
+            const iso = items[0].label;
+            const parts = iso.split('-');
+            return parseInt(parts[1]) + '/' + parseInt(parts[2]);
+          },
           label(ctx) {
             return '  ' + ctx.dataset.label + '  ' + formatValue(ctx.parsed.y);
           }
         }
       }
-    },
+    }, extraPlugins || {}),
     scales: {
       x: {
         type: 'category',
@@ -267,6 +295,13 @@ function makeOptions(formatValue, reverseY, extraOptions) {
           maxRotation: 45,
           autoSkip: true,
           maxTicksLimit: 12,
+          // Display as M/D instead of raw ISO string
+          callback(val, idx) {
+            const iso = this.getLabelForValue(idx);
+            if (!iso) return '';
+            const parts = iso.split('-');
+            return parseInt(parts[1]) + '/' + parseInt(parts[2]);
+          }
         }
       },
       y: {
@@ -287,31 +322,41 @@ function makeOptions(formatValue, reverseY, extraOptions) {
         }
       }
     }
-  }, extraOptions || {});
+  };
 }
 
 // ── DATASET BUILDER ──────────────────────────────────────────
-// Builds a Chart.js dataset array from history data.
+// Builds a Chart.js dataset array. Each data point is a sparse array
+// aligned to the full trading-day labels array — null for days with
+// no data, which renders as a gap in the line.
 //   members  — array of nicknames (from history JSON, stable order)
-//   days     — array of day objects
+//   days     — array of day objects from history
+//   labels   — full trading-day label array from buildTradingDayLabels
 //   accessor — fn(memberDayObj) → number | null
-function buildDatasets(members, days, accessor) {
+function buildDatasets(members, days, labels, accessor) {
+  // Build a date→value map for each member for fast lookup
   return members.map(nick => {
     const color = MEMBER_COLORS[nick] || '#7c7f87';
-    const data = days.map(day => {
-      const mIdx = day.m ? day.m[members.indexOf(nick)] : null;
-      if (!mIdx) return null;
-      const v = accessor(mIdx);
-      return (v == null || isNaN(v)) ? null : v;
+    const nickIdx = members.indexOf(nick);
+    // Map date string → value
+    const valueMap = {};
+    days.forEach(day => {
+      const mObj = day.m ? day.m[nickIdx] : null;
+      if (mObj) {
+        const v = accessor(mObj);
+        if (v != null && !isNaN(v)) valueMap[day.date] = v;
+      }
     });
+    // Align to labels array — null for missing dates
+    const data = labels.map(iso => valueMap[iso] != null ? valueMap[iso] : null);
     return {
       label: nick,
       data,
       borderColor: color,
       backgroundColor: color + '22',
       borderWidth: 2,
-      pointRadius: 3,
-      pointHoverRadius: 5,
+      pointRadius: 0,
+      pointHoverRadius: 4,
       pointBackgroundColor: color,
       tension: 0.3,
       spanGaps: false,
@@ -374,90 +419,73 @@ function showPanel(id) {
 // ── CHART RENDERERS ──────────────────────────────────────────
 
 function renderGainer(hist) {
-  const { members, days, labels } = hist;
-  const datasets = buildDatasets(members, days, m => m.gainer ? m.gainer.pct : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.gainer ? m.gainer.pct : null);
   const chart = new Chart(document.getElementById('canvas-gainer'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => v.toFixed(1) + '%', false, {
-      plugins: { zeroLine: true }
-    })
+    options: makeOptions(v => v.toFixed(1) + '%', false, periodStart, periodEnd, { zeroLine: true })
   });
   buildLegend(document.getElementById('legend-gainer'), chart, members);
   g_charts.gainer = chart;
 }
 
 function renderLoser(hist) {
-  const { members, days, labels } = hist;
-  // Raw pct values — negative = losing = better. Y axis reversed so more negative plots higher.
-  const datasets = buildDatasets(members, days, m => m.loser ? m.loser.pct : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.loser ? m.loser.pct : null);
   const chart = new Chart(document.getElementById('canvas-loser'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => v.toFixed(1) + '%', true, {
-      plugins: { zeroLine: true }
-    })
+    options: makeOptions(v => v.toFixed(1) + '%', true, periodStart, periodEnd, { zeroLine: true })
   });
   buildLegend(document.getElementById('legend-loser'), chart, members);
   g_charts.loser = chart;
 }
 
 function renderLock(hist) {
-  const { members, days, labels } = hist;
-  const datasets = buildDatasets(members, days, m => m.lock ? m.lock.pct : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.lock ? m.lock.pct : null);
   const chart = new Chart(document.getElementById('canvas-lock'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => v.toFixed(1) + '%', false, {
-      plugins: { zeroLine: true }
-    })
+    options: makeOptions(v => v.toFixed(1) + '%', false, periodStart, periodEnd, { zeroLine: true })
   });
   buildLegend(document.getElementById('legend-lock'), chart, members);
   g_charts.lock = chart;
 }
 
 function renderBasket(hist) {
-  const { members, days, labels } = hist;
-  const datasets = buildDatasets(members, days, m => m.basket ? m.basket.pct : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.basket ? m.basket.pct : null);
   const chart = new Chart(document.getElementById('canvas-basket'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => v.toFixed(1) + '%', false, {
-      plugins: { zeroLine: true }
-    })
+    options: makeOptions(v => v.toFixed(1) + '%', false, periodStart, periodEnd, { zeroLine: true })
   });
   buildLegend(document.getElementById('legend-basket'), chart, members);
   g_charts.basket = chart;
 }
 
 function renderSP(hist) {
-  const { members, days, labels } = hist;
-  // pct_off = absolute % error. Lower is better. Y axis reversed so "closer = higher".
-  const datasets = buildDatasets(members, days, m => m.sp ? m.sp.pct_off : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.sp ? m.sp.pct_off : null);
   const chart = new Chart(document.getElementById('canvas-sp'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => v.toFixed(1) + '%', true, {
-      plugins: { zeroLine: false }
-    })
+    options: makeOptions(v => v.toFixed(1) + '%', true, periodStart, periodEnd, { zeroLine: false })
   });
   buildLegend(document.getElementById('legend-sp'), chart, members);
   g_charts.sp = chart;
 }
 
 function renderLeaderboard(hist) {
-  const { members, days, labels } = hist;
-  // lb_rank: 1 = best. Y axis reversed so rank 1 plots at top.
-  const datasets = buildDatasets(members, days, m => m.lb_rank != null ? m.lb_rank : null);
-  // Integer y ticks, range 1–N
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.lb_rank != null ? m.lb_rank : null);
   const n = members.length;
-  const opts = makeOptions(v => Math.round(v) === v ? '#' + Math.round(v) : '', true, {
-    plugins: { zeroLine: false }
-  });
+  const opts = makeOptions(v => Math.round(v) === v ? '#' + Math.round(v) : '', true, periodStart, periodEnd, { zeroLine: false });
   opts.scales.y.min = 0.5;
   opts.scales.y.max = n + 0.5;
   opts.scales.y.ticks.stepSize = 1;
-  // Override afterDataLimits — fixed range, no padding needed
   opts.scales.y.afterDataLimits = () => {};
   const chart = new Chart(document.getElementById('canvas-leaderboard'), {
     type: 'line',
@@ -469,15 +497,12 @@ function renderLeaderboard(hist) {
 }
 
 function renderPayoff(hist) {
-  const { members, days, labels } = hist;
-  // net = whole dollar integer
-  const datasets = buildDatasets(members, days, m => m.net != null ? m.net : null);
+  const { members, days, labels, periodStart, periodEnd } = hist;
+  const datasets = buildDatasets(members, days, labels, m => m.net != null ? m.net : null);
   const chart = new Chart(document.getElementById('canvas-payoff'), {
     type: 'line',
     data: { labels, datasets },
-    options: makeOptions(v => (v >= 0 ? '+$' : '-$') + Math.abs(Math.round(v)), false, {
-      plugins: { zeroLine: true }
-    })
+    options: makeOptions(v => (v >= 0 ? '+$' : '-$') + Math.abs(Math.round(v)), false, periodStart, periodEnd, { zeroLine: true })
   });
   buildLegend(document.getElementById('legend-payoff'), chart, members);
   g_charts.payoff = chart;
@@ -511,21 +536,19 @@ function buildPanels(hist) {
 }
 
 // ── DATA PREP ────────────────────────────────────────────────
-// Transforms raw history JSON into a normalised shape used by all renderers.
 function prepHistory(raw) {
-  const members = raw.members;   // alphabetical nicknames, stable
+  const members = raw.members;
   const days = raw.days || [];
-
-  // Sort days chronologically (should already be, but be safe)
   days.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
 
-  // X axis labels: shorten ISO date to MM/DD
-  const labels = days.map(d => {
-    const parts = d.date.split('-');
-    return parts[1] + '/' + parts[2];
-  });
+  const today = new Date().toISOString().slice(0, 10);
+  const periodStart = raw.period_start || (days.length ? days[0].date : today);
+  const periodEnd   = raw.period_end   || today;
 
-  return { members, days, labels, period: raw.period };
+  // Pre-compute the full trading-day label array once; all charts share it.
+  const labels = buildTradingDayLabels(periodStart, periodEnd);
+
+  return { members, days, labels, periodStart, periodEnd, period: raw.period };
 }
 
 // ── FETCH & INIT ─────────────────────────────────────────────
