@@ -313,6 +313,15 @@ header{
 }
 .gear-btn:hover{ color:var(--text); border-color:var(--dim); }
 
+.chart-btn{
+  background:none; border:1px solid var(--line);
+  color:var(--muted); border-radius:6px;
+  width:46px; height:46px; display:flex; align-items:center; justify-content:center;
+  transition:color 0.15s, border-color 0.15s;
+  font-size:18px; flex-shrink:0; text-decoration:none;
+}
+.chart-btn:hover{ color:var(--text); border-color:var(--dim); }
+
 /* ── CONTENT ── */
 .content{
   max-width:1200px; margin:0 auto;
@@ -609,6 +618,7 @@ footer{
   .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
   .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
   .gear-btn{ width:36px; height:36px; font-size:16px; }
+  .chart-btn{ width:36px; height:36px; font-size:15px; }
   .hdr-meta{
     grid-column:1/-1; grid-row:2;
     flex-wrap:wrap; gap:6px 14px; font-size:9px;
@@ -667,6 +677,7 @@ a.period-dl {
   </div>
   <div class="hdr-controls" style="display:flex;align-items:center;gap:8px;">
     <div class="mkt closed" id="mkt">—</div>
+    <a href="/charts.html" class="chart-btn" title="Charts">▲</a>
     <button class="gear-btn" onclick="openSettings()" title="Settings">⚙</button>
   </div>
 </header>

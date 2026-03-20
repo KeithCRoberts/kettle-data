@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kettle · Charts</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:       #111213;
+  --bg2:      #161718;
+  --bg3:      #1c1d1f;
+  --line:     #252628;
+  --line2:    rgba(37,38,40,0.6);
+  --text:     #e8e9ea;
+  --muted:    #7c7f87;
+  --dim:      #4a4d54;
+  --green:    #22c55e;
+  --red:      #ef4444;
+  --blue:     #3b82f6;
+  --gold:     #f59e0b;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Inter Tight',sans-serif;
+  font-size:16px; min-height:100vh; overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 28px;
+  border-bottom:1px solid var(--line);
+  background:var(--bg2);
+  position:sticky; top:0; z-index:19;
+  gap:16px;
+}
+.logo{
+  font-size:22px; font-weight:900; letter-spacing:4px;
+  text-transform:uppercase; color:var(--text); line-height:1;
+  text-decoration:none; flex-shrink:0;
+}
+.logo span{ color:var(--blue); }
+.logo-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--muted); letter-spacing:2px;
+  text-transform:uppercase; margin-left:12px; align-self:center;
+}
+.hdr-left{ display:flex; align-items:baseline; gap:0; }
+
+.back-btn{
+  background:none; border:1px solid var(--line);
+  color:var(--muted); border-radius:6px;
+  padding:0 14px; height:36px; display:flex; align-items:center;
+  cursor:pointer; transition:color 0.15s, border-color 0.15s;
+  font-size:13px; font-family:'JetBrains Mono',monospace;
+  letter-spacing:1px; text-decoration:none; flex-shrink:0;
+  gap:6px;
+}
+.back-btn:hover{ color:var(--text); border-color:var(--dim); }
+
+/* ── TAB STRIP ── */
+.tab-strip{
+  display:flex; align-items:center; gap:0;
+  overflow-x:auto; scrollbar-width:none;
+  border-bottom:1px solid var(--line);
+  background:var(--bg2);
+  padding:0 20px;
+  position:sticky; top:65px; z-index:18;
+  flex-shrink:0;
+}
+.tab-strip::-webkit-scrollbar{ display:none; }
+.tab{
+  padding:12px 18px;
+  font-size:11px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--muted);
+  cursor:pointer; transition:color 0.15s;
+  user-select:none; white-space:nowrap; border:none; background:none;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+}
+.tab:hover{ color:var(--text); }
+.tab.active{ color:var(--text); border-bottom-color:var(--blue); }
+
+/* ── CONTENT ── */
+.content{
+  max-width:1200px; margin:0 auto;
+  padding:24px 20px 48px;
+}
+
+/* ── CHART PANEL ── */
+.chart-panel{ display:none; }
+.chart-panel.active{ display:block; }
+
+.panel-hdr{
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom:6px;
+  flex-wrap:wrap; gap:8px;
+}
+.panel-title{
+  font-size:12px; font-weight:700; letter-spacing:2px;
+  text-transform:uppercase; color:var(--text);
+}
+.panel-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; color:var(--muted); letter-spacing:1px;
+}
+
+/* ── LEGEND ── */
+.legend{
+  display:flex; flex-wrap:wrap; gap:6px 18px;
+  margin-bottom:16px;
+}
+.legend-item{
+  display:flex; align-items:center; gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px; color:var(--muted); cursor:pointer;
+  user-select:none; transition:opacity 0.15s;
+}
+.legend-item.dimmed{ opacity:0.25; }
+.legend-swatch{
+  width:20px; height:3px; border-radius:2px; flex-shrink:0;
+}
+.legend-dot{
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+}
+
+/* ── CANVAS WRAPPER ── */
+.chart-wrap{
+  position:relative;
+  width:100%;
+  height:420px;
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:16px 16px 8px;
+}
+
+@media(max-width:640px){
+  header{ padding:10px 14px; }
+  .logo{ font-size:18px; letter-spacing:3px; }
+  .logo-sub{ font-size:9px; }
+  .tab{ padding:10px 12px; font-size:10px; letter-spacing:1.5px; }
+  .tab-strip{ top:57px; padding:0 10px; }
+  .chart-wrap{ height:320px; }
+  .content{ padding:16px 10px 40px; }
+}
+@media(max-width:380px){
+  .tab{ padding:8px 10px; font-size:9px; letter-spacing:1px; }
+}
+
+/* ── LOADING / ERROR ── */
+.loading{
+  text-align:center; padding:60px 20px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; color:var(--muted); letter-spacing:1px;
+}
+.err{ color:var(--red); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-left">
+    <a href="/" class="logo">K<span>·</span>ETTLE</a>
+    <span class="logo-sub">Charts</span>
+  </div>
+  <a href="/" class="back-btn">← Dashboard</a>
+</header>
+
+<div class="tab-strip" id="tab-strip">
+  <button class="tab active" data-panel="gainer"      onclick="showPanel('gainer'     )">Gainer</button>
+  <button class="tab"        data-panel="loser"       onclick="showPanel('loser'      )">Loser</button>
+  <button class="tab"        data-panel="lock"        onclick="showPanel('lock'       )">Lock</button>
+  <button class="tab"        data-panel="basket"      onclick="showPanel('basket'     )">Basket</button>
+  <button class="tab"        data-panel="sp"          onclick="showPanel('sp'         )">S&amp;P</button>
+  <button class="tab"        data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</button>
+  <button class="tab"        data-panel="payoff"      onclick="showPanel('payoff'     )">Payoff</button>
+</div>
+
+<div class="content" id="content">
+  <div class="loading" id="loading">Loading history…</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+
+// ── MEMBER COLORS ────────────────────────────────────────────
+// Keyed by nickname. Deliberately avoids the UI semantic colors:
+// --green (#22c55e), --red (#ef4444), --blue (#3b82f6), --gold (#f59e0b).
+const MEMBER_COLORS = {
+  Al:    '#60a5fa',
+  Bob:   '#f472b6',
+  Dave:  '#fb923c',
+  Joe:   '#a78bfa',
+  Keith: '#facc15',
+  Ron:   '#2dd4bf',
+  Tim:   '#86efac',
+};
+
+// ── ZERO LINE PLUGIN ─────────────────────────────────────────
+// Draws a subtle dashed line at y=0 when zero is in view.
+// Opt in per chart: plugins: { zeroLine: true }
+const zeroLinePlugin = {
+  id: 'zeroLine',
+  afterDraw(chart) {
+    if (!chart.options.plugins.zeroLine) return;
+    const yScale = chart.scales.y;
+    if (yScale.min > 0 || yScale.max < 0) return;
+    const y = yScale.getPixelForValue(0);
+    const ctx = chart.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(chart.chartArea.left, y);
+    ctx.lineTo(chart.chartArea.right, y);
+    ctx.strokeStyle = '#4a4d54';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+};
+Chart.register(zeroLinePlugin);
+
+// ── SHARED CHART OPTIONS FACTORY ─────────────────────────────
+// Returns a complete Chart.js options object for a line chart.
+// Callers supply:
+//   formatValue(v)  — formats a y-axis number for ticks + tooltips
+//   reverseY        — true for Loser (more negative = better = up) and Rank
+//   extraOptions    — shallow-merged into the returned options object
+function makeOptions(formatValue, reverseY, extraOptions) {
+  return Object.assign({
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 400 },
+    plugins: {
+      legend: { display: false },
+      zeroLine: false,
+      tooltip: {
+        backgroundColor: '#1c1d1f',
+        borderColor: '#252628',
+        borderWidth: 1,
+        titleColor: '#7c7f87',
+        bodyColor: '#e8e9ea',
+        titleFont: { family: "'JetBrains Mono', monospace", size: 10 },
+        bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+        padding: 10,
+        callbacks: {
+          label(ctx) {
+            return '  ' + ctx.dataset.label + '  ' + formatValue(ctx.parsed.y);
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'category',
+        grid: { color: '#1c1d1f' },
+        border: { color: '#252628' },
+        ticks: {
+          color: '#7c7f87',
+          font: { family: "'JetBrains Mono', monospace", size: 10 },
+          maxRotation: 45,
+          autoSkip: true,
+          maxTicksLimit: 12,
+        }
+      },
+      y: {
+        reverse: !!reverseY,
+        grid: { color: '#252628' },
+        border: { color: '#252628' },
+        ticks: {
+          color: '#7c7f87',
+          font: { family: "'JetBrains Mono', monospace", size: 10 },
+          callback: v => formatValue(v)
+        },
+        afterDataLimits(scale) {
+          const range = scale.max - scale.min;
+          if (range === 0) return;
+          const pad = range * 0.08;
+          scale.min -= pad;
+          scale.max += pad;
+        }
+      }
+    }
+  }, extraOptions || {});
+}
+
+// ── DATASET BUILDER ──────────────────────────────────────────
+// Builds a Chart.js dataset array from history data.
+//   members  — array of nicknames (from history JSON, stable order)
+//   days     — array of day objects
+//   accessor — fn(memberDayObj) → number | null
+function buildDatasets(members, days, accessor) {
+  return members.map(nick => {
+    const color = MEMBER_COLORS[nick] || '#7c7f87';
+    const data = days.map(day => {
+      const mIdx = day.m ? day.m[members.indexOf(nick)] : null;
+      if (!mIdx) return null;
+      const v = accessor(mIdx);
+      return (v == null || isNaN(v)) ? null : v;
+    });
+    return {
+      label: nick,
+      data,
+      borderColor: color,
+      backgroundColor: color + '22',
+      borderWidth: 2,
+      pointRadius: 3,
+      pointHoverRadius: 5,
+      pointBackgroundColor: color,
+      tension: 0.3,
+      spanGaps: false,
+    };
+  });
+}
+
+// ── LEGEND BUILDER ───────────────────────────────────────────
+// Renders a clickable HTML legend that toggles dataset visibility.
+function buildLegend(legendEl, chart, members) {
+  legendEl.innerHTML = '';
+  members.forEach((nick, i) => {
+    const color = MEMBER_COLORS[nick] || '#7c7f87';
+    const item = document.createElement('span');
+    item.className = 'legend-item';
+    item.innerHTML =
+      `<span class="legend-swatch" style="background:${color}"></span>${nick}`;
+    item.addEventListener('click', () => {
+      const meta = chart.getDatasetMeta(i);
+      meta.hidden = !meta.hidden;
+      item.classList.toggle('dimmed', meta.hidden);
+      chart.update();
+    });
+    legendEl.appendChild(item);
+  });
+}
+
+// ── PANEL HELPERS ────────────────────────────────────────────
+// Creates the standard panel skeleton (header, legend, canvas wrapper)
+// and returns { panelEl, legendEl, canvasEl }.
+function makePanel(id, title, sub) {
+  const panel = document.createElement('div');
+  panel.className = 'chart-panel' + (id === 'gainer' ? ' active' : '');
+  panel.id = 'panel-' + id;
+
+  panel.innerHTML = `
+    <div class="panel-hdr">
+      <span class="panel-title">${title}</span>
+      <span class="panel-sub" id="sub-${id}">${sub}</span>
+    </div>
+    <div class="legend" id="legend-${id}"></div>
+    <div class="chart-wrap">
+      <canvas id="canvas-${id}"></canvas>
+    </div>`;
+  return panel;
+}
+
+// ── STATE ────────────────────────────────────────────────────
+let g_charts = {};   // nick → Chart instance, keyed by panel id
+let g_history = null;
+
+// ── PANEL SWITCH ─────────────────────────────────────────────
+function showPanel(id) {
+  document.querySelectorAll('.chart-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.panel === id));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+}
+
+// ── CHART RENDERERS ──────────────────────────────────────────
+
+function renderGainer(hist) {
+  const { members, days, labels } = hist;
+  const datasets = buildDatasets(members, days, m => m.gainer ? m.gainer.pct : null);
+  const chart = new Chart(document.getElementById('canvas-gainer'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => v.toFixed(1) + '%', false, {
+      plugins: { zeroLine: true }
+    })
+  });
+  buildLegend(document.getElementById('legend-gainer'), chart, members);
+  g_charts.gainer = chart;
+}
+
+function renderLoser(hist) {
+  const { members, days, labels } = hist;
+  // Raw pct values — negative = losing = better. Y axis reversed so more negative plots higher.
+  const datasets = buildDatasets(members, days, m => m.loser ? m.loser.pct : null);
+  const chart = new Chart(document.getElementById('canvas-loser'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => v.toFixed(1) + '%', true, {
+      plugins: { zeroLine: true }
+    })
+  });
+  buildLegend(document.getElementById('legend-loser'), chart, members);
+  g_charts.loser = chart;
+}
+
+function renderLock(hist) {
+  const { members, days, labels } = hist;
+  const datasets = buildDatasets(members, days, m => m.lock ? m.lock.pct : null);
+  const chart = new Chart(document.getElementById('canvas-lock'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => v.toFixed(1) + '%', false, {
+      plugins: { zeroLine: true }
+    })
+  });
+  buildLegend(document.getElementById('legend-lock'), chart, members);
+  g_charts.lock = chart;
+}
+
+function renderBasket(hist) {
+  const { members, days, labels } = hist;
+  const datasets = buildDatasets(members, days, m => m.basket ? m.basket.pct : null);
+  const chart = new Chart(document.getElementById('canvas-basket'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => v.toFixed(1) + '%', false, {
+      plugins: { zeroLine: true }
+    })
+  });
+  buildLegend(document.getElementById('legend-basket'), chart, members);
+  g_charts.basket = chart;
+}
+
+function renderSP(hist) {
+  const { members, days, labels } = hist;
+  // pct_off = absolute % error. Lower is better. Y axis reversed so "closer = higher".
+  const datasets = buildDatasets(members, days, m => m.sp ? m.sp.pct_off : null);
+  const chart = new Chart(document.getElementById('canvas-sp'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => v.toFixed(1) + '%', true, {
+      plugins: { zeroLine: false }
+    })
+  });
+  buildLegend(document.getElementById('legend-sp'), chart, members);
+  g_charts.sp = chart;
+}
+
+function renderLeaderboard(hist) {
+  const { members, days, labels } = hist;
+  // lb_rank: 1 = best. Y axis reversed so rank 1 plots at top.
+  const datasets = buildDatasets(members, days, m => m.lb_rank != null ? m.lb_rank : null);
+  // Integer y ticks, range 1–N
+  const n = members.length;
+  const opts = makeOptions(v => Math.round(v) === v ? '#' + Math.round(v) : '', true, {
+    plugins: { zeroLine: false }
+  });
+  opts.scales.y.min = 0.5;
+  opts.scales.y.max = n + 0.5;
+  opts.scales.y.ticks.stepSize = 1;
+  // Override afterDataLimits — fixed range, no padding needed
+  opts.scales.y.afterDataLimits = () => {};
+  const chart = new Chart(document.getElementById('canvas-leaderboard'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: opts
+  });
+  buildLegend(document.getElementById('legend-leaderboard'), chart, members);
+  g_charts.leaderboard = chart;
+}
+
+function renderPayoff(hist) {
+  const { members, days, labels } = hist;
+  // net = whole dollar integer
+  const datasets = buildDatasets(members, days, m => m.net != null ? m.net : null);
+  const chart = new Chart(document.getElementById('canvas-payoff'), {
+    type: 'line',
+    data: { labels, datasets },
+    options: makeOptions(v => (v >= 0 ? '+$' : '-$') + Math.abs(Math.round(v)), false, {
+      plugins: { zeroLine: true }
+    })
+  });
+  buildLegend(document.getElementById('legend-payoff'), chart, members);
+  g_charts.payoff = chart;
+}
+
+// ── BUILD ALL PANELS ─────────────────────────────────────────
+function buildPanels(hist) {
+  const content = document.getElementById('content');
+  content.innerHTML = '';
+
+  const PANELS = [
+    { id: 'gainer',      title: 'Gainer',      sub: '% gain from season open',          render: renderGainer      },
+    { id: 'loser',       title: 'Loser',        sub: '% change — inverted (lower = better at top)', render: renderLoser  },
+    { id: 'lock',        title: 'Lock',         sub: '% gain from season open',          render: renderLock        },
+    { id: 'basket',      title: 'Basket',       sub: '3-stock average % gain',           render: renderBasket      },
+    { id: 'sp',          title: 'S&amp;P Pred', sub: '% error from index — inverted (closer = better at top)', render: renderSP },
+    { id: 'leaderboard', title: 'Leaderboard',  sub: 'rank over time — #1 at top',       render: renderLeaderboard },
+    { id: 'payoff',      title: 'Payoff',       sub: 'net position in dollars',          render: renderPayoff      },
+  ];
+
+  PANELS.forEach(p => content.appendChild(makePanel(p.id, p.title, p.sub)));
+
+  // Render all charts (inactive panels are display:none but Chart.js handles that fine)
+  PANELS.forEach(p => p.render(hist));
+
+  // Restore active panel from hash or default to gainer
+  const hash = location.hash.replace('#', '');
+  if (hash && PANELS.find(p => p.id === hash)) {
+    showPanel(hash);
+  }
+}
+
+// ── DATA PREP ────────────────────────────────────────────────
+// Transforms raw history JSON into a normalised shape used by all renderers.
+function prepHistory(raw) {
+  const members = raw.members;   // alphabetical nicknames, stable
+  const days = raw.days || [];
+
+  // Sort days chronologically (should already be, but be safe)
+  days.sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+
+  // X axis labels: shorten ISO date to MM/DD
+  const labels = days.map(d => {
+    const parts = d.date.split('-');
+    return parts[1] + '/' + parts[2];
+  });
+
+  return { members, days, labels, period: raw.period };
+}
+
+// ── FETCH & INIT ─────────────────────────────────────────────
+async function init() {
+  try {
+    const r = await fetch('/history.json');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const raw = await r.json();
+
+    if (!raw.members || !raw.days || raw.days.length === 0) {
+      document.getElementById('content').innerHTML =
+        '<div class="loading">No history data available yet.</div>';
+      return;
+    }
+
+    g_history = prepHistory(raw);
+
+    // Update sub-labels with the actual period
+    // (panels not built yet — done inside buildPanels)
+
+    buildPanels(g_history);
+
+    // Update period label in each panel header now that panels exist
+    document.querySelectorAll('[id^="sub-"]').forEach(el => {
+      // Leave per-chart subs as-is; period shown in tab strip sub only
+    });
+
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      '<span class="err">Failed to load history: ' + e.message + '</span>';
+  }
+}
+
+// Persist active panel in URL hash so back/forward works
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    location.hash = tab.dataset.panel;
+  });
+});
+
+init();
+</script>
+</body>
+</html>
