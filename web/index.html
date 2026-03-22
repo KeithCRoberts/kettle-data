@@ -318,7 +318,7 @@ header{
   color:var(--muted); border-radius:6px;
   width:46px; height:46px; display:flex; align-items:center; justify-content:center;
   transition:color 0.15s, border-color 0.15s;
-  font-size:18px; flex-shrink:0; text-decoration:none;
+  font-size:18px; letter-spacing:-1px; flex-shrink:0; text-decoration:none;
 }
 .chart-btn:hover{ color:var(--text); border-color:var(--dim); }
 
@@ -618,7 +618,7 @@ footer{
   .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
   .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
   .gear-btn{ width:36px; height:36px; font-size:16px; }
-  .chart-btn{ width:36px; height:36px; font-size:15px; }
+  .chart-btn{ width:36px; height:36px; font-size:16px; }
   .hdr-meta{
     grid-column:1/-1; grid-row:2;
     flex-wrap:wrap; gap:6px 14px; font-size:9px;
@@ -677,7 +677,7 @@ a.period-dl {
   </div>
   <div class="hdr-controls" style="display:flex;align-items:center;gap:8px;">
     <div class="mkt closed" id="mkt">—</div>
-    <a href="/charts.html" class="chart-btn" title="Charts">▲</a>
+    <a href="/charts.html" class="chart-btn" title="Charts">▲%</a>
     <button class="gear-btn" onclick="openSettings()" title="Settings">⚙</button>
   </div>
 </header>
@@ -1044,6 +1044,13 @@ function renderSettings(d){
         ${tog('cfg-muted', d.muted)}
       </div>
       <div class="cfg-row">
+        <div>
+          <div class="cfg-label">Display sleep</div>
+          <div class="cfg-hint">seconds after close before backlight off</div>
+        </div>
+        ${numInput('cfg-sleep-timeout', d.display_sleep_timeout_sec, 30, 3600, 30)}
+      </div>
+      <div class="cfg-row">
         <div><div class="cfg-label">Timezone</div></div>
         <select class="cfg-select" id="cfg-tz">${tzOpts}</select>
       </div>
@@ -1129,6 +1136,7 @@ function collectSettings(){
   return {
     timezone:  get('cfg-tz').value,
     muted:     get('cfg-muted').checked,
+    display_sleep_timeout_sec: parseInt(get('cfg-sleep-timeout').value, 10),
     rotation: {
       enabled:    get('cfg-rot-enabled').checked,
       grid_delay: parseInt(get('cfg-grid-delay').value, 10),

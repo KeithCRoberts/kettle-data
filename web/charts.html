@@ -30,38 +30,99 @@ body{
   font-size:16px; min-height:100vh; overflow-x:hidden;
 }
 
+/* ── TICKER ── */
+.ticker-wrap{
+  background: linear-gradient(90deg,var(--blue) 0%,#6366f1 40%,#8b5cf6 70%,#a855f7 100%);
+  overflow:hidden; height:26px; display:flex; align-items:center;
+  position:sticky; top:0; z-index:20;
+}
+.ticker-track{
+  display:flex;
+  animation:scroll-left 105s linear infinite;
+  white-space:nowrap;
+}
+@keyframes scroll-left{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ticker-item{
+  color:rgba(255,255,255,0.92);
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px; font-weight:500;
+  padding:0 20px; letter-spacing:0.5px;
+}
+.ticker-item .t-pos{ color:#86efac; font-weight:600; }
+.ticker-item .t-neg{ color:#fca5a5; font-weight:600; }
+.ticker-sep{ opacity:0.3; margin:0 2px; }
+
 /* ── HEADER ── */
 header{
-  display:flex; align-items:center; justify-content:space-between;
+  display:grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items:center;
+  gap:20px;
   padding:14px 28px;
   border-bottom:1px solid var(--line);
   background:var(--bg2);
-  position:sticky; top:0; z-index:19;
-  gap:16px;
+  position:sticky; top:26px; z-index:19;
 }
 .logo{
   font-size:22px; font-weight:900; letter-spacing:4px;
   text-transform:uppercase; color:var(--text); line-height:1;
-  text-decoration:none; flex-shrink:0;
+  text-decoration:none;
 }
 .logo span{ color:var(--blue); }
-.logo-sub{
+.hdr-meta{
+  display:flex; align-items:center; justify-content:center; gap:24px;
   font-family:'JetBrains Mono',monospace;
-  font-size:10px; color:var(--muted); letter-spacing:2px;
-  text-transform:uppercase; margin-left:12px; align-self:center;
+  font-size:11px; color:var(--muted); letter-spacing:1px;
 }
-.hdr-left{ display:flex; align-items:baseline; gap:0; }
-
+.hdr-meta .v{ color:var(--text); }
+.payoff-hero{
+  text-align:right; line-height:1.3;
+  padding:4px 20px;
+  border-right:1px solid var(--line);
+}
+.payoff-lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase;
+}
+.payoff-val{
+  font-size:26px; font-weight:800; letter-spacing:-0.5px; line-height:1;
+}
+.payoff-hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px; color:var(--muted); letter-spacing:1px;
+}
+.sp-inline{
+  font-family:'JetBrains Mono',monospace;
+  text-align:right; line-height:1.4;
+}
+.sp-inline .n{ font-size:22px; font-weight:700; color:var(--text); }
+.sp-inline .c{ font-size:10px; }
+.mkt{
+  padding:5px 14px; font-size:11px; font-weight:700;
+  letter-spacing:2px; border-radius:4px; font-family:'JetBrains Mono',monospace;
+  white-space:nowrap;
+}
+.mkt.open{
+  background:rgba(34,197,94,0.12); color:var(--green);
+  border:1px solid rgba(34,197,94,0.25);
+}
+.mkt.open::before{ content:'● '; animation:blink 1.5s ease infinite; }
+.mkt.closed{
+  background:rgba(239,68,68,0.1); color:var(--red);
+  border:1px solid rgba(239,68,68,0.2);
+}
+.mkt.closed::before{ content:''; }
+@keyframes blink{ 0%,100%{opacity:1} 50%{opacity:.4} }
 .back-btn{
   background:none; border:1px solid var(--line);
   color:var(--muted); border-radius:6px;
-  padding:0 14px; height:36px; display:flex; align-items:center;
+  width:46px; height:46px; display:flex; align-items:center; justify-content:center;
   cursor:pointer; transition:color 0.15s, border-color 0.15s;
-  font-size:13px; font-family:'JetBrains Mono',monospace;
-  letter-spacing:1px; text-decoration:none; flex-shrink:0;
-  gap:6px;
+  font-size:18px; letter-spacing:-2px; flex-shrink:0; text-decoration:none;
 }
 .back-btn:hover{ color:var(--text); border-color:var(--dim); }
+.pos{ color:var(--green); }
+.neg{ color:var(--red); }
 
 /* ── TAB STRIP ── */
 .tab-strip{
@@ -70,7 +131,7 @@ header{
   border-bottom:1px solid var(--line);
   background:var(--bg2);
   padding:0 20px;
-  position:sticky; top:65px; z-index:18;
+  position:sticky; top:91px; z-index:18;
   flex-shrink:0;
 }
 .tab-strip::-webkit-scrollbar{ display:none; }
@@ -88,7 +149,7 @@ header{
 /* ── CONTENT ── */
 .content{
   max-width:1200px; margin:0 auto;
-  padding:24px 20px 48px;
+  padding:24px 20px 72px;
 }
 
 /* ── CHART PANEL ── */
@@ -124,9 +185,6 @@ header{
 .legend-swatch{
   width:20px; height:3px; border-radius:2px; flex-shrink:0;
 }
-.legend-dot{
-  width:8px; height:8px; border-radius:50%; flex-shrink:0;
-}
 
 /* ── CANVAS WRAPPER ── */
 .chart-wrap{
@@ -139,17 +197,107 @@ header{
   padding:16px 16px 8px;
 }
 
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .sp-inline .n{ font-size:18px; }
+  .hdr-meta{ flex-wrap:wrap; gap:2px 16px; font-size:10px; }
+  .hdr-meta span:last-child{ flex-basis:100%; text-align:center; font-size:9px; }
+}
 @media(max-width:640px){
-  header{ padding:10px 14px; }
-  .logo{ font-size:18px; letter-spacing:3px; }
-  .logo-sub{ font-size:9px; }
+  header{
+    grid-template-columns:1fr auto;
+    grid-template-rows:auto auto auto;
+    gap:8px 12px; padding:10px 14px;
+  }
+  .logo{ grid-column:1; grid-row:1; font-size:18px; letter-spacing:3px; }
+  .hdr-controls{ grid-column:2; grid-row:1; align-self:center; justify-self:end; }
+  .hdr-meta{ grid-column:1/-1; grid-row:2; flex-wrap:wrap; gap:6px 14px; font-size:9px; }
+  .payoff-hero{ grid-column:1; grid-row:3; text-align:left; border-right:none; padding:0; }
+  .payoff-val{ font-size:22px; }
+  .sp-inline{ grid-column:2; grid-row:3; text-align:right; }
+  .sp-inline .n{ font-size:20px; }
   .tab{ padding:10px 12px; font-size:10px; letter-spacing:1.5px; }
   .tab-strip{ top:57px; padding:0 10px; }
   .chart-wrap{ height:320px; }
   .content{ padding:16px 10px 40px; }
+  .back-btn{ width:36px; height:36px; font-size:16px; }
 }
 @media(max-width:380px){
   .tab{ padding:8px 10px; font-size:9px; letter-spacing:1px; }
+}
+
+/* ── MODAL ── */
+.modal-backdrop{
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,0.75); z-index:10000;
+  align-items:center; justify-content:center;
+}
+.modal-backdrop.open{ display:flex; }
+.modal{
+  background: linear-gradient(160deg, #1a1f2e 0%, #161a28 60%, #111520 100%);
+  border:1px solid rgba(59,130,246,0.3);
+  border-radius:12px; max-width:420px; width:92%;
+  overflow:hidden;
+  animation:modal-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
+}
+@keyframes modal-in{
+  from{ opacity:0; transform:scale(0.88) translateY(12px); }
+  to{   opacity:1; transform:scale(1)    translateY(0); }
+}
+.modal-hdr{
+  background:rgba(59,130,246,0.07); padding:18px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(59,130,246,0.15);
+}
+.modal-title{ font-size:22px; font-weight:800; letter-spacing:-0.3px; color:var(--text); }
+.modal-close{
+  font-size:18px; color:var(--muted); cursor:pointer;
+  line-height:1; padding:0 2px; transition:color 0.15s;
+}
+.modal-close:hover{ color:var(--text); }
+.modal-net{
+  padding:16px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(37,38,40,0.6);
+}
+.modal-net-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; color:var(--muted); letter-spacing:2px; text-transform:uppercase;
+}
+.modal-net-val{ font-size:28px; font-weight:800; letter-spacing:-0.5px; }
+.modal table{ width:100%; border-collapse:collapse; }
+.modal th{
+  padding:5px 20px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; letter-spacing:1.5px; color:var(--muted);
+  text-transform:uppercase; text-align:left;
+  background:rgba(59,130,246,0.04); border-bottom:1px solid rgba(37,38,40,0.6);
+}
+.modal th.r, .modal td.r{ text-align:right; }
+.modal td{
+  padding:9px 20px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px; color:var(--text);
+  border-top:1px solid rgba(37,38,40,0.5);
+}
+.modal td.pos{ color:var(--green); }
+.modal td.neg{ color:var(--red); }
+.modal tr:first-child td{ border-top:none; }
+.modal-footer{
+  padding:10px 20px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px; color:var(--muted); letter-spacing:1px;
+  border-top:1px solid rgba(37,38,40,0.5); text-align:center;
+}
+
+footer{
+  position:fixed; bottom:0; left:0; right:0;
+  border-top:1px solid var(--line); padding:8px 28px;
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted);
+  letter-spacing:1px; display:flex; gap:24px; flex-wrap:wrap;
+  justify-content:center; background:var(--bg2);
+  z-index:17;
 }
 
 /* ── LOADING / ERROR ── */
@@ -163,27 +311,63 @@ header{
 </head>
 <body>
 
+<!-- Ticker -->
+<div class="ticker-wrap"><div class="ticker-track" id="ticker"></div></div>
+
+<!-- Header -->
 <header>
-  <div class="hdr-left">
-    <a href="/" class="logo">K<span>·</span>ETTLE</a>
-    <span class="logo-sub">Charts</span>
+  <a href="/" class="logo">K<span>·</span>ETTLE <span style="font-size:13px;letter-spacing:3px;color:var(--muted);font-weight:500;">CHARTS</span></a>
+  <div class="hdr-meta">
+    <span>PERIOD: <span class="v" id="h-period">—</span></span>
+    <span>OWNER: <span class="v" id="h-owner">—</span></span>
+    <span>UPDATED: <span class="v" id="h-updated">—</span></span>
   </div>
-  <a href="/" class="back-btn">← Dashboard</a>
+  <div class="payoff-hero" id="payoff-hero" onclick="openModal()" style="cursor:pointer;">
+    <div class="payoff-lbl">PAYOFF</div>
+    <div class="payoff-val" id="payoff-val">——</div>
+    <div class="payoff-hint">tap for detail</div>
+  </div>
+  <div class="sp-inline">
+    <div class="n" id="sp-n">——</div>
+    <div class="c" id="sp-c">—</div>
+  </div>
+  <div class="hdr-controls" style="display:flex;align-items:center;gap:8px;">
+    <div class="mkt closed" id="mkt">—</div>
+    <a href="/" class="back-btn" title="Dashboard">← ⊞</a>
+  </div>
 </header>
 
+<!-- Payoff Detail modal -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Payoff Detail</span>
+      <span class="modal-close" onclick="closeModal()">✕</span>
+    </div>
+    <div class="modal-net">
+      <span class="modal-net-label">Net Position</span>
+      <span class="modal-net-val" id="modal-net">——</span>
+    </div>
+    <table id="modal-items"></table>
+    <div class="modal-footer">click outside to dismiss</div>
+  </div>
+</div>
+
 <div class="tab-strip" id="tab-strip">
-  <button class="tab active" data-panel="gainer"      onclick="showPanel('gainer'     )">Gainer</button>
+  <button class="tab active" data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</button>
+  <button class="tab"        data-panel="sp"          onclick="showPanel('sp'         )">S&amp;P</button>
+  <button class="tab"        data-panel="gainer"      onclick="showPanel('gainer'     )">Gainer</button>
   <button class="tab"        data-panel="loser"       onclick="showPanel('loser'      )">Loser</button>
   <button class="tab"        data-panel="lock"        onclick="showPanel('lock'       )">Lock</button>
   <button class="tab"        data-panel="basket"      onclick="showPanel('basket'     )">Basket</button>
-  <button class="tab"        data-panel="sp"          onclick="showPanel('sp'         )">S&amp;P</button>
-  <button class="tab"        data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</button>
   <button class="tab"        data-panel="payoff"      onclick="showPanel('payoff'     )">Payoff</button>
 </div>
 
 <div class="content" id="content">
   <div class="loading" id="loading">Loading history…</div>
 </div>
+
+<footer id="ftr"><span>kettle.local</span></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
@@ -389,7 +573,7 @@ function buildLegend(legendEl, chart, members) {
 // and returns { panelEl, legendEl, canvasEl }.
 function makePanel(id, title, sub) {
   const panel = document.createElement('div');
-  panel.className = 'chart-panel' + (id === 'gainer' ? ' active' : '');
+  panel.className = 'chart-panel';
   panel.id = 'panel-' + id;
 
   panel.innerHTML = `
@@ -405,8 +589,9 @@ function makePanel(id, title, sub) {
 }
 
 // ── STATE ────────────────────────────────────────────────────
-let g_charts = {};   // nick → Chart instance, keyed by panel id
-let g_history = null;
+let g_charts   = {};
+let g_history  = null;
+let g_liveData = null;   // populated from /data.json; used by openModal()
 
 // ── PANEL SWITCH ─────────────────────────────────────────────
 function showPanel(id) {
@@ -514,24 +699,24 @@ function buildPanels(hist) {
   content.innerHTML = '';
 
   const PANELS = [
-    { id: 'gainer',      title: 'Gainer',      sub: '% gain from season open',          render: renderGainer      },
-    { id: 'loser',       title: 'Loser',        sub: '% change — inverted (lower = better at top)', render: renderLoser  },
-    { id: 'lock',        title: 'Lock',         sub: '% gain from season open',          render: renderLock        },
-    { id: 'basket',      title: 'Basket',       sub: '3-stock average % gain',           render: renderBasket      },
+    { id: 'leaderboard', title: 'Leaderboard',  sub: 'rank over time — #1 at top',                       render: renderLeaderboard },
     { id: 'sp',          title: 'S&amp;P Pred', sub: '% error from index — inverted (closer = better at top)', render: renderSP },
-    { id: 'leaderboard', title: 'Leaderboard',  sub: 'rank over time — #1 at top',       render: renderLeaderboard },
-    { id: 'payoff',      title: 'Payoff',       sub: 'net position in dollars',          render: renderPayoff      },
+    { id: 'gainer',      title: 'Gainer',        sub: '% gain from season open',                          render: renderGainer      },
+    { id: 'loser',       title: 'Loser',          sub: '% change — inverted (lower = better at top)',     render: renderLoser       },
+    { id: 'lock',        title: 'Lock',           sub: '% gain from season open',                         render: renderLock        },
+    { id: 'basket',      title: 'Basket',         sub: '3-stock average % gain',                          render: renderBasket      },
+    { id: 'payoff',      title: 'Payoff',         sub: 'net position in dollars',                         render: renderPayoff      },
   ];
 
   PANELS.forEach(p => content.appendChild(makePanel(p.id, p.title, p.sub)));
-
-  // Render all charts (inactive panels are display:none but Chart.js handles that fine)
   PANELS.forEach(p => p.render(hist));
 
-  // Restore active panel from hash or default to gainer
+  // Restore active panel from hash, default to leaderboard
   const hash = location.hash.replace('#', '');
   if (hash && PANELS.find(p => p.id === hash)) {
     showPanel(hash);
+  } else {
+    showPanel('leaderboard');
   }
 }
 
@@ -551,12 +736,107 @@ function prepHistory(raw) {
   return { members, days, labels, periodStart, periodEnd, period: raw.period };
 }
 
+// ── HEADER HELPERS ───────────────────────────────────────────
+function fmt(v, d=2){ return v==null?'—':Number(v).toFixed(d); }
+function fmtP(v){ return v==null?'—':(v>=0?'+':'')+Number(v).toFixed(2)+'%'; }
+function fmtD(v){ return v==null?'—':(v>=0?'+$':'-$')+Math.abs(v); }
+function pc(v){ return v==null?'':v>=0?'pos':'neg'; }
+
+function buildTicker(d) {
+  const src = (d.ticker && d.ticker.length) ? d.ticker : [];
+  if (!src.length) return;
+  const items = src.map(e => {
+    const pct = e.daily_pct;
+    const pctStr = pct!=null ? `<span class="${pct>=0?'t-pos':'t-neg'}">${fmtP(pct)}</span>` : '';
+    return `<span class="ticker-item"><span style="font-weight:600">${e.sym}</span> ${fmt(e.price)} ${pctStr}<span class="ticker-sep"> | </span></span>`;
+  }).join('');
+  document.getElementById('ticker').innerHTML = items + items;
+}
+
+function renderHeader(data, status) {
+  const m = data.meta;
+  document.getElementById('h-period').textContent  = m.period;
+  document.getElementById('h-owner').textContent   = m.owner_nick;
+  document.getElementById('h-updated').textContent = (m.updated || '').replace('T', ' ');
+
+  const sp = data.sp_index;
+  const sc = sp.change_pct >= 0 ? 'pos' : 'neg';
+  document.getElementById('sp-n').textContent  = fmt(sp.current);
+  document.getElementById('sp-c').innerHTML    =
+    `<span class="${sc}">${fmtP(sp.change_pct)} &nbsp; ${sp.change>=0?'+':''}${fmt(sp.change)}</span>`;
+
+  const pv = document.getElementById('payoff-val');
+  pv.textContent = fmtD(data.payoff.total);
+  pv.className   = 'payoff-val ' + pc(data.payoff.total);
+
+  if (status) {
+    const open = status.market_open;
+    const mkt  = document.getElementById('mkt');
+    mkt.textContent = open ? 'OPEN' : '○ CLOSED';
+    mkt.className   = 'mkt ' + (open ? 'open' : 'closed');
+  }
+
+  buildTicker(data);
+
+  if (status) {
+    const heap = Math.round(status.free_heap / 1024) + 'KB';
+    const up   = Math.floor(status.uptime_s / 3600) + 'h' +
+                 String(Math.floor((status.uptime_s % 3600) / 60)).padStart(2, '0') + 'm';
+    document.getElementById('ftr').innerHTML =
+      `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span>` +
+      `<span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span>` +
+      `<span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>` +
+      (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '');
+  }
+}
+
+// ── MODAL ────────────────────────────────────────────────────
+function openModal() {
+  if (!g_liveData) return;
+  const p = g_liveData.payoff;
+  document.getElementById('modal-net').textContent = fmtD(p.total);
+  document.getElementById('modal-net').className   = 'modal-net-val ' + pc(p.total);
+  document.getElementById('modal-items').innerHTML =
+    (p.items || []).map(i =>
+      `<tr><td>${i.label}</td><td class="r ${i.amount>=0?'pos':'neg'}">${fmtD(i.amount)}</td></tr>`
+    ).join('');
+  document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-backdrop')) return;
+  document.getElementById('modal-backdrop').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('modal-backdrop').classList.remove('open');
+});
+
 // ── FETCH & INIT ─────────────────────────────────────────────
 async function init() {
+  // Fetch history and live data in parallel
+  const [histRes, dataRes, statusRes] = await Promise.all([
+    fetch('/history.json'),
+    fetch('/data.json').catch(() => null),
+    fetch('/status.json').catch(() => null),
+  ]);
+
+  // Populate header from live data if available (non-fatal if missing)
   try {
-    const r = await fetch('/history.json');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const raw = await r.json();
+    if (dataRes && dataRes.ok) {
+      const data   = await dataRes.json();
+      const status = (statusRes && statusRes.ok) ? await statusRes.json() : null;
+      g_liveData = data;
+      renderHeader(data, status);
+    }
+  } catch(e) {
+    // Header stays at defaults — not a blocker for charts
+  }
+
+  // Load history
+  try {
+    if (!histRes.ok) throw new Error('HTTP ' + histRes.status);
+    const raw = await histRes.json();
 
     if (!raw.members || !raw.days || raw.days.length === 0) {
       document.getElementById('content').innerHTML =
@@ -565,16 +845,7 @@ async function init() {
     }
 
     g_history = prepHistory(raw);
-
-    // Update sub-labels with the actual period
-    // (panels not built yet — done inside buildPanels)
-
     buildPanels(g_history);
-
-    // Update period label in each panel header now that panels exist
-    document.querySelectorAll('[id^="sub-"]').forEach(el => {
-      // Leave per-chart subs as-is; period shown in tab strip sub only
-    });
 
   } catch(e) {
     document.getElementById('loading').innerHTML =
