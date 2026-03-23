@@ -1256,16 +1256,37 @@ function showError(){
   g_lbData=null; g_lbTab='lb';
 }
 
+let g_pollTimer = null;
+let g_wasMarketOpen = null;
+const POLL_MARKET_OPEN_MS   = 60000;   // 60s when market is open
+const POLL_MARKET_CLOSED_MS = 300000;  // 5min when market is closed
+
+function schedulePoll(marketOpen) {
+  // If market just transitioned to open, refresh immediately and switch to fast polling
+  if (g_wasMarketOpen === false && marketOpen === true) {
+    g_wasMarketOpen = true;
+    refresh();
+    return;
+  }
+  g_wasMarketOpen = marketOpen;
+  if (g_pollTimer) clearTimeout(g_pollTimer);
+  g_pollTimer = setTimeout(() => refresh(),
+    marketOpen ? POLL_MARKET_OPEN_MS : POLL_MARKET_CLOSED_MS);
+}
+
 async function refresh(){
   try{
     const[dr,sr]=await Promise.all([fetch('/data.json'),fetch('/status.json')]);
     if(!dr.ok) throw 0;
-    render(await dr.json(), sr.ok?await sr.json():null);
+    const status = sr.ok ? await sr.json() : null;
+    render(await dr.json(), status);
+    schedulePoll(status && status.market_open);
   }catch{
     showError();
+    schedulePoll(false); // on error, back off to slow poll
   }
 }
-refresh(); setInterval(refresh,60000);
+refresh();
 </script>
 </body>
 </html>
