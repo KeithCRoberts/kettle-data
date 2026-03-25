@@ -43,6 +43,7 @@
           "psram": true,
           "psram_mb": 8,
           "touch": "capacitive",
+          "touch_enabled": true,
           "sd": "sdmmc"
         }
       },
@@ -66,6 +67,7 @@
   "devices": [
     { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC" },
     { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC" },
+    { "device_id": "CFFE608B", "owner_name": "Keith Roberts", "profile": "CYD-USBH"},
     { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC" },
     { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC" },
     { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC" },

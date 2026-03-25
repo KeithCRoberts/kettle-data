@@ -185,6 +185,12 @@ header{
 .legend-swatch{
   width:20px; height:3px; border-radius:2px; flex-shrink:0;
 }
+.prev-crash-badge {
+  color: #e8a020;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: default;
+}
 
 /* ── CANVAS WRAPPER ── */
 .chart-wrap{
@@ -786,7 +792,8 @@ function renderHeader(data, status) {
       `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span>` +
       `<span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span>` +
       `<span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>` +
-      (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '');
+      (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '') +
+      (status.prev_crash_reason ? `<span class="prev-crash-badge" title="Prev crash: ${{3:'PANIC',7:'INT_WDT',8:'TASK_WDT'}[status.prev_crash_reason]||'reason '+status.prev_crash_reason}">⚠ prev crash</span>` : '');
   }
 }
 

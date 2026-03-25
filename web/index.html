@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kettle</title>
+
+<!-- Theme color: tints the Chrome browser bar to match the app background -->
+<meta name="theme-color" content="#111213">
+
+<!-- Web app manifest (enables polished install icon + standalone mode) -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Favicon: inline SVG, works in all modern browsers without a LittleFS fetch -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a1f2e'/%3E%3Cg transform='translate(-3,-3) rotate(-45,16,16)'%3E%3Cpath d='M2,22 L10,14 L16,18 L22,14 L30,22 L22,20 L16,23 L10,20 Z' fill='%235DCAA5'/%3E%3C/g%3E%3Cline x1='21' y1='20' x2='21' y2='29' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='21' y1='24.5' x2='27' y2='20' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='21' y1='24.5' x2='27' y2='29' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a1f2e'/%3E%3Cg transform='translate(-3,-3) rotate(-45,16,16)'%3E%3Cpath d='M2,22 L10,14 L16,18 L22,14 L30,22 L22,20 L16,23 L10,20 Z' fill='%235DCAA5'/%3E%3C/g%3E%3Cline x1='21' y1='20' x2='21' y2='29' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='21' y1='24.5' x2='27' y2='20' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3Cline x1='21' y1='24.5' x2='27' y2='29' stroke='%23EF9F27' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- Apple touch icon: iOS "Add to Home Screen" — inline SVG not supported by iOS,
+     so this falls back gracefully; a proper PNG would need to be served from LittleFS -->
+<link rel="apple-touch-icon" href="/icon-192.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -580,6 +594,21 @@ footer{
 }
 .cfg-save:hover{ background:rgba(59,130,246,0.25); border-color:rgba(59,130,246,0.6); }
 .cfg-save:disabled{ opacity:0.4; cursor:default; }
+.cfg-log{
+  background:transparent; border:1px solid rgba(255,255,255,0.12);
+  color:var(--muted); border-radius:6px; padding:8px 14px;
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  font-weight:700; letter-spacing:1px; cursor:pointer;
+  text-decoration:none; white-space:nowrap;
+  transition:border-color 0.15s, color 0.15s;
+}
+.cfg-log:hover{ border-color:rgba(255,255,255,0.3); color:var(--text); }
+.prev-crash-badge {
+  color: #e8a020;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: default;
+}
 
 /* ── RESPONSIVE ── */
 
@@ -709,6 +738,7 @@ a.period-dl {
       <div class="loading">Loading…</div>
     </div>
     <div class="cfg-footer">
+      <a href="/log" class="cfg-log" download>↓ SESSION LOG</a>
       <span class="cfg-status" id="cfg-status"></span>
       <button class="cfg-save" id="cfg-save" onclick="saveSettings()">SAVE</button>
     </div>
@@ -1234,8 +1264,10 @@ function render(data,status){
   if(status){
     const heap=Math.round(status.free_heap/1024)+'KB';
     const up=Math.floor(status.uptime_s/3600)+'h'+String(Math.floor((status.uptime_s%3600)/60)).padStart(2,'0')+'m';
-    document.getElementById('ftr').innerHTML=
-      `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span><span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span><span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>${status.battery_present?`<span><b>batt</b> ${status.battery_pct}%</span>`:''}`;
+    document.getElementById('ftr').innerHTML =
+      `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span><span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span><span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>` +
+      (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '') +
+      (status.prev_crash_reason ? `<span class="prev-crash-badge" title="Prev crash: ${{3:'PANIC',7:'INT_WDT',8:'TASK_WDT'}[status.prev_crash_reason]||'reason '+status.prev_crash_reason}">⚠ prev crash</span>` : '');
   }
 }
 
