@@ -65,13 +65,14 @@
       }
     },
   "devices": [
-    { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC" },
-    { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC" },
-    { "device_id": "CFFE608B", "owner_name": "Keith Roberts", "profile": "CYD-USBH"},
-    { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC" },
-    { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC" },
-    { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC" },
+    { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC", "comment": "Bob's legacy device (Elegoo)" },
+    { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC", "comment": "Keith's legacy device (Elegoo)" },
+    { "device_id": "CFFE608B", "owner_name": "Keith Roberts", "profile": "CYD-USBH", "comment": "Keith's production device (Hosyond CYD)"},
+    { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC", "comment": "Rom's legacy device (Elegoo)" },
+    { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC", "comment": "Tim's legacy device (Elegoo)" },
+    { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC", "comment": "Dave's legacy device (Elegoo)" },
     { "device_id": "075CCD6B", "owner_name": "Keith Roberts", "profile": "CYD-USBM", "comment": "Test device (legacy CYD)" },
-	  { "device_id": "E8C24770", "owner_name": "Bob Taubert",   "profile": "CYD-USBHB", "comment": "Beta test device (Hosyond CYD)" }
+	  { "device_id": "E8C24770", "owner_name": "Bob Taubert",   "profile": "CYD-USBHB", "comment": "Beta test device (Hosyond CYD)" },
+    { "device_id": "DE96DEE2", "owner_name": "Bob Taubert",   "profile": "CYD-USBH", "comment": "Beta test device (Hosyond CYD)" }
   ]
 }
