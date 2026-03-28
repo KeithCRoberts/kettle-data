@@ -607,7 +607,21 @@ footer{
   color: #e8a020;
   font-weight: 600;
   letter-spacing: 0.02em;
-  cursor: default;
+  cursor: pointer;
+  background: none;
+  border: 1px solid rgba(232,160,32,0.4);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.prev-crash-badge:hover {
+  background: rgba(232,160,32,0.12);
+  border-color: rgba(232,160,32,0.7);
+}
+.prev-crash-badge:active {
+  background: rgba(232,160,32,0.22);
 }
 
 /* ── RESPONSIVE ── */
@@ -1267,7 +1281,7 @@ function render(data,status){
     document.getElementById('ftr').innerHTML =
       `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span><span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span><span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>` +
       (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '') +
-      (status.prev_crash_reason ? `<span class="prev-crash-badge" title="Prev crash: ${{3:'PANIC',7:'INT_WDT',8:'TASK_WDT'}[status.prev_crash_reason]||'reason '+status.prev_crash_reason}">⚠ prev crash</span>` : '');
+      (status.prev_crash_reason ? `<button class="prev-crash-badge" onclick="downloadDiagBundle()" title="Prev crash: ${{3:'PANIC',7:'INT_WDT',8:'TASK_WDT'}[status.prev_crash_reason]||'reason '+status.prev_crash_reason} — click to download diagnostics">⚠ DIAG</button>` : '');
   }
 }
 
@@ -1319,6 +1333,59 @@ async function refresh(){
   }
 }
 refresh();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+// ── DIAGNOSTIC BUNDLE DOWNLOAD ───────────────────────────────────────────────
+// Fetches current log, previous log, and core dump (if present) from Kettle,
+// packages them into a ZIP, and triggers a browser download.
+async function downloadDiagBundle() {
+  const btn = document.querySelector('.prev-crash-badge');
+  if (btn) { btn.textContent = '⏳ …'; btn.disabled = true; }
+
+  try {
+    const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    const zip = new JSZip();
+    const folder = zip.folder('kettle-diag-' + ts);
+
+    // Fetch all three sources in parallel; coredump is optional (404 is fine).
+    const [curRes, prevRes, dumpRes] = await Promise.all([
+      fetch('/log'),
+      fetch('/log/prev'),
+      fetch('/api/coredump').catch(() => null),
+    ]);
+
+    if (curRes.ok) {
+      folder.file('session.log', await curRes.text());
+    }
+    if (prevRes.ok) {
+      folder.file('session-prev.log', await prevRes.text());
+    }
+    if (dumpRes && dumpRes.ok) {
+      // Content-Disposition carries the original filename (e.g. CORE_12345.raw)
+      const cd = dumpRes.headers.get('Content-Disposition') || '';
+      const match = cd.match(/filename="?([^";\r\n]+)"?/);
+      const dumpName = match ? match[1] : 'coredump.raw';
+      folder.file(dumpName, await dumpRes.arrayBuffer());
+    }
+
+    const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'kettle-diag-' + ts + '.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (btn) { btn.textContent = '⚠ DIAG'; btn.disabled = false; }
+  } catch (e) {
+    console.error('Diag bundle error:', e);
+    if (btn) { btn.textContent = '⚠ DIAG'; btn.disabled = false; }
+    alert('Diagnostic download failed. Check the browser console for details.');
+  }
+}
 </script>
 </body>
 </html>
