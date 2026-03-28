@@ -1349,10 +1349,11 @@ async function downloadDiagBundle() {
     const folder = zip.folder('kettle-diag-' + ts);
 
     // Fetch all three sources in parallel; coredump is optional (404 is fine).
-    const [curRes, prevRes, dumpRes] = await Promise.all([
+    const [curRes, prevRes, dumpRes, statusRes] = await Promise.all([
       fetch('/log'),
       fetch('/log/prev'),
       fetch('/api/coredump').catch(() => null),
+      fetch('/status.json').catch(() => null),
     ]);
 
     if (curRes.ok) {
@@ -1368,6 +1369,21 @@ async function downloadDiagBundle() {
       const dumpName = match ? match[1] : 'coredump.raw';
       folder.file(dumpName, await dumpRes.arrayBuffer());
     }
+
+    // manifest.txt — records version and device so the correct ELF can be
+    // retrieved from the GitHub release when decoding the core dump.
+    let manifest = `Kettle Diagnostic Bundle\n`;
+    manifest    += `Captured: ${new Date().toISOString()}\n`;
+    if (statusRes && statusRes.ok) {
+      const st = await statusRes.json();
+      manifest += `Version:   ${st.version || 'unknown'}\n`;
+      manifest += `Device ID: ${st.device_id || 'unknown'}\n`;
+      manifest += `Uptime:    ${st.uptime_s || 0}s\n`;
+    }
+    manifest += `\nTo decode the core dump:\n`;
+    manifest += `  1. Download the matching ELF from the GitHub release for the version above.\n`;
+    manifest += `  2. Run: esp-coredump info_corefile -t raw -c <dump>.raw <version>.elf --gdb <path-to-gdb>\n`;
+    folder.file('manifest.txt', manifest);
 
     const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
     const url  = URL.createObjectURL(blob);
