@@ -694,6 +694,7 @@ a.period-dl {
   text-decoration: none;
   cursor: pointer;
 }
+a.period-dl.period-stale { color: var(--red); }
 
 </style>
 </head>
@@ -1248,7 +1249,9 @@ function render(data,status){
 
   buildTicker(data);
 
-  document.getElementById('h-period').textContent=m.period;
+  const hPeriod=document.getElementById('h-period');
+  hPeriod.textContent=m.period;
+  hPeriod.classList.toggle('period-stale', !!(status&&status.stale));
   document.getElementById('h-owner').textContent=m.owner_nick;
   document.getElementById('h-updated').textContent=(m.updated||'').replace('T',' ');
 
@@ -1299,7 +1302,9 @@ function render(data,status){
 // ── FETCH ────────────────────────────────────────────────────
 function showError(){
   document.getElementById('ticker').innerHTML='';
-  document.getElementById('h-period').textContent='—';
+  const hPeriodErr=document.getElementById('h-period');
+  hPeriodErr.textContent='—';
+  hPeriodErr.classList.remove('period-stale');
   document.getElementById('h-owner').textContent='—';
   document.getElementById('h-updated').textContent='—';
   document.getElementById('sp-n').textContent='——';

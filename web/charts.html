@@ -75,6 +75,7 @@ header{
   font-size:11px; color:var(--muted); letter-spacing:1px;
 }
 .hdr-meta .v{ color:var(--text); }
+.period-stale{ color:var(--red) !important; }
 .payoff-hero{
   text-align:right; line-height:1.3;
   padding:4px 20px;
@@ -775,7 +776,9 @@ function buildTicker(d) {
 
 function renderHeader(data, status) {
   const m = data.meta;
-  document.getElementById('h-period').textContent  = m.period;
+  const hPeriod = document.getElementById('h-period');
+  hPeriod.textContent = m.period;
+  hPeriod.classList.toggle('period-stale', !!(status && status.stale));
   document.getElementById('h-owner').textContent   = m.owner_nick;
   document.getElementById('h-updated').textContent = (m.updated || '').replace('T', ' ');
 
