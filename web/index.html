@@ -236,6 +236,7 @@ header{
   box-shadow: 0 0 0 1px rgba(59,130,246,0.08), 0 32px 64px rgba(0,0,0,0.7);
   animation:mc-in 0.18s cubic-bezier(0.34,1.56,0.64,1);
 }
+@keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @keyframes mc-in{
   from{ opacity:0; transform:scale(0.88) translateY(12px); }
   to{   opacity:1; transform:scale(1)    translateY(0); }
@@ -595,6 +596,16 @@ footer{
 }
 .cfg-save:hover{ background:rgba(59,130,246,0.25); border-color:rgba(59,130,246,0.6); }
 .cfg-save:disabled{ opacity:0.4; cursor:default; }
+.cfg-restart{
+  background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35);
+  color:var(--gold); border-radius:6px; padding:8px 20px;
+  font-family:'JetBrains Mono',monospace; font-size:11px;
+  font-weight:700; letter-spacing:1.5px; cursor:pointer;
+  transition:background 0.15s, border-color 0.15s;
+  white-space:nowrap;
+}
+.cfg-restart:hover{ background:rgba(245,158,11,0.22); border-color:rgba(245,158,11,0.6); }
+.cfg-restart:disabled{ opacity:0.4; cursor:default; }
 .cfg-log{
   background:transparent; border:1px solid rgba(255,255,255,0.12);
   color:var(--muted); border-radius:6px; padding:8px 14px;
@@ -694,7 +705,6 @@ a.period-dl {
   text-decoration: none;
   cursor: pointer;
 }
-a.period-dl.period-stale { color: var(--red); }
 
 </style>
 </head>
@@ -755,6 +765,7 @@ a.period-dl.period-stale { color: var(--red); }
     </div>
     <div class="cfg-footer">
       <a href="/log" class="cfg-log" download>↓ SESSION LOG</a>
+      <button class="cfg-restart" id="cfg-restart" onclick="restartKettle()">RESTART</button>
       <span class="cfg-status" id="cfg-status"></span>
       <button class="cfg-save" id="cfg-save" onclick="saveSettings()">SAVE</button>
     </div>
@@ -1240,6 +1251,54 @@ async function saveSettings(){
   btn.disabled = false;
 }
 
+function restartKettle(){
+  // Step 1 — show confirmation view, disable footer buttons
+  document.getElementById('cfg-save').disabled    = true;
+  document.getElementById('cfg-restart').disabled = true;
+  document.getElementById('cfg-body').innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+                gap:20px;padding:40px 24px;text-align:center;">
+      <div style="font-size:32px;line-height:1;">⟳</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);">Restart Kettle?</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+                  line-height:1.6;max-width:280px;">
+        Kettle will reboot and be offline for about 10 seconds.
+        Unsaved settings changes will be lost.
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button class="cfg-restart" onclick="confirmRestart()" style="padding:9px 28px;">CONFIRM</button>
+        <button class="cfg-log"     onclick="cancelRestart()"  style="padding:9px 24px;cursor:pointer;">CANCEL</button>
+      </div>
+    </div>`;
+}
+
+function cancelRestart(){
+  document.getElementById('cfg-save').disabled    = false;
+  document.getElementById('cfg-restart').disabled = false;
+  renderSettings(g_cfgData);
+}
+
+async function confirmRestart(){
+  // Step 2 — show restarting state, fire POST, auto-close
+  document.getElementById('cfg-body').innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+                gap:16px;padding:40px 24px;text-align:center;">
+      <div style="font-size:32px;line-height:1;animation:spin 1s linear infinite;">⟳</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);">Restarting…</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">
+        Kettle will be back in about 10 seconds.
+      </div>
+    </div>`;
+  try {
+    await fetch('/api/reboot', { method: 'POST' });
+  } catch { /* device reboots mid-response — fetch may throw, that's fine */ }
+  setTimeout(() => {
+    document.getElementById('cfg-backdrop').classList.remove('open');
+    document.getElementById('cfg-save').disabled    = false;
+    document.getElementById('cfg-restart').disabled = false;
+  }, 2000);
+}
+
 // ── RENDER ───────────────────────────────────────────────────
 function render(data,status){
   const firstRender = !g_lbData;
@@ -1249,9 +1308,7 @@ function render(data,status){
 
   buildTicker(data);
 
-  const hPeriod=document.getElementById('h-period');
-  hPeriod.textContent=m.period;
-  hPeriod.classList.toggle('period-stale', !!(status&&status.stale));
+  document.getElementById('h-period').textContent=m.period;
   document.getElementById('h-owner').textContent=m.owner_nick;
   document.getElementById('h-updated').textContent=(m.updated||'').replace('T',' ');
 
@@ -1302,9 +1359,7 @@ function render(data,status){
 // ── FETCH ────────────────────────────────────────────────────
 function showError(){
   document.getElementById('ticker').innerHTML='';
-  const hPeriodErr=document.getElementById('h-period');
-  hPeriodErr.textContent='—';
-  hPeriodErr.classList.remove('period-stale');
+  document.getElementById('h-period').textContent='—';
   document.getElementById('h-owner').textContent='—';
   document.getElementById('h-updated').textContent='—';
   document.getElementById('sp-n').textContent='——';
