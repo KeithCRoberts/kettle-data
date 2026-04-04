@@ -1228,6 +1228,8 @@ async function saveSettings(){
     });
     const j = await r.json();
     if(j.ok){
+      // Update g_cfgData to reflect saved state so cancelRestart() restores correctly
+      g_cfgData = Object.assign({}, g_cfgData, collectSettings());
       if(j.reboot_required){
         // Timezone change — stay open, show amber warning
         status.textContent = 'Timezone changed — reboot Kettle to apply.';
@@ -1252,7 +1254,10 @@ async function saveSettings(){
 }
 
 function restartKettle(){
-  // Step 1 — show confirmation view, disable footer buttons
+  // Step 1 — clear status, show confirmation view, disable footer buttons
+  const status = document.getElementById('cfg-status');
+  status.textContent = '';
+  status.className = 'cfg-status';
   document.getElementById('cfg-save').disabled    = true;
   document.getElementById('cfg-restart').disabled = true;
   document.getElementById('cfg-body').innerHTML = `
@@ -1262,7 +1267,7 @@ function restartKettle(){
       <div style="font-size:15px;font-weight:700;color:var(--text);">Restart Kettle?</div>
       <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
                   line-height:1.6;max-width:280px;">
-        Kettle will reboot and be offline for about 10 seconds.
+        Kettle will reboot and be offline for 1–2 minutes.
         Unsaved settings changes will be lost.
       </div>
       <div style="display:flex;gap:12px;">
@@ -1279,14 +1284,15 @@ function cancelRestart(){
 }
 
 async function confirmRestart(){
-  // Step 2 — show restarting state, fire POST, auto-close
+  // Step 2 — show restarting state, fire POST, auto-close after 5s
   document.getElementById('cfg-body').innerHTML = `
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
                 gap:16px;padding:40px 24px;text-align:center;">
       <div style="font-size:32px;line-height:1;animation:spin 1s linear infinite;">⟳</div>
       <div style="font-size:15px;font-weight:700;color:var(--text);">Restarting…</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);">
-        Kettle will be back in about 10 seconds.
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+                  line-height:1.6;">
+        Kettle will be back in 1–2 minutes.<br>You can close this window.
       </div>
     </div>`;
   try {
@@ -1296,7 +1302,7 @@ async function confirmRestart(){
     document.getElementById('cfg-backdrop').classList.remove('open');
     document.getElementById('cfg-save').disabled    = false;
     document.getElementById('cfg-restart').disabled = false;
-  }, 2000);
+  }, 5000);
 }
 
 // ── RENDER ───────────────────────────────────────────────────
