@@ -1,7 +1,11 @@
 {
   "schema": 1,
-  "latest_fw": "1.1.0",
-  "latest_fw_date": "01/21/2026",
+  "latest_fw": "1.2.0",
+  "latest_fw_date": "MM/DD/YYYY",
+  "latest_fw_url": "https://github.com/KeithCRoberts/kettle-flasher/releases/download/vX.Y.Z/firmware_s3.bin",
+
+  "coredump_max_age_days": 5,
+  "coredump_max_files": 10,
 
   "profiles": {
     "CYD-USBM": {
@@ -36,22 +40,37 @@
         "rotation": 0
       },
       "capabilities": {
+        "battery": false,
         "mcu": "ESP32-S3",
         "flash_mb": 16,
         "psram": true,
         "psram_mb": 8,
         "touch": "capacitive",
+        "touch_enabled": true,
+        "sd": "sdmmc"
+      }
+    },
+    "CYD-USBHB": {
+      "display": {
+        "invert": true,
+        "rotation": 0
+      },
+      "capabilities": {
+        "battery": true,
+        "mcu": "ESP32-S3",
+        "flash_mb": 16,
+        "psram": true,
+        "psram_mb": 8,
+        "touch": "capacitive",
+        "touch_enabled": true,
         "sd": "sdmmc"
       }
     }
   },
-  
+
   "devices": [
-    { "device_id": "82F3ECBA", "owner_name": "Bob Taubert",   "profile": "CYD-USBC" },
-    { "device_id": "C4CE1D88", "owner_name": "Keith Roberts", "profile": "CYD-USBC" },
-    { "device_id": "84FFEBBC", "owner_name": "Ron Taubert",   "profile": "CYD-USBC" },
-    { "device_id": "C3A6628F", "owner_name": "Tim Osborne",   "profile": "CYD-USBC" },
-    { "device_id": "2D97092D", "owner_name": "Dave Fink",     "profile": "CYD-USBC" },
-    { "device_id": "075CCD6B", "owner_name": "Keith Roberts", "profile": "CYD-USBM" }
+    { "device_id": "XXXXXXXX", "owner_name": "Member Name", "profile": "CYD-USBC",  "comment": "Description" },
+    { "device_id": "XXXXXXXX", "owner_name": "Member Name", "profile": "CYD-USBH",  "comment": "Description" },
+    { "device_id": "XXXXXXXX", "owner_name": "Member Name", "profile": "CYD-USBHB", "comment": "Description" }
   ]
 }
