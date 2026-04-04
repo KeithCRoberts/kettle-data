@@ -3,6 +3,8 @@
   "latest_fw": "1.2.0",
   "latest_fw_date": "03/22/2026",
   "latest_fw_url": "https://github.com/KeithCRoberts/kettle-flasher/releases/download/v1.2.0/firmware_s3.bin",
+  "coredump_max_age_days": 5,
+  "coredump_max_files": 10,
 
   "profiles": {
     "CYD-USBM": {
