@@ -327,6 +327,23 @@ footer{
   font-size:12px; color:var(--muted); letter-spacing:1px;
 }
 .err{ color:var(--red); }
+
+/* ── CHART LEADER FOOTER ── */
+.chart-leader-footer {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+.chart-leader-footer .clf-leader {
+  color: var(--text);
+  font-weight: 600;
+}
+.chart-leader-footer .clf-sep {
+  margin: 0 10px;
+  color: var(--dim);
+}
 </style>
 </head>
 <body>
@@ -625,6 +642,51 @@ function showPanel(id) {
   if (panel) panel.classList.add('active');
 }
 
+
+// ── LEADER STATS ─────────────────────────────────────────────
+// Derives current leader and leadership change count from history days.
+// Returns { leader: string|null, changes: number }
+function computeLeaderStats(days) {
+  const sorted = days.slice().sort((a, b) => a.date < b.date ? -1 : 1);
+  let leader = null;
+  let changes = 0;
+  let prevLeader = null;
+  for (const day of sorted) {
+    if (!day.m) continue;
+    // Find member with lb_rank === 1
+    const leaderIdx = day.m.findIndex(m => m.lb_rank === 1);
+    if (leaderIdx === -1) continue;
+    // We need the members array from hist; pass it in via closure at call site
+    // Actually we return the index — caller resolves to name
+    const currentLeader = leaderIdx;
+    if (prevLeader === null) {
+      prevLeader = currentLeader;
+      leader = currentLeader;
+    } else if (currentLeader !== prevLeader) {
+      changes++;
+      prevLeader = currentLeader;
+      leader = currentLeader;
+    } else {
+      leader = currentLeader;
+    }
+  }
+  return { leaderIdx: leader, changes };
+}
+
+// Builds and appends the leader footer element to a panel element.
+function appendLeaderFooter(panelEl, hist) {
+  const { members, days } = hist;
+  const { leaderIdx, changes } = computeLeaderStats(days);
+  const leaderName = (leaderIdx !== null && members[leaderIdx]) ? members[leaderIdx] : '—';
+  const el = document.createElement('div');
+  el.className = 'chart-leader-footer';
+  el.innerHTML =
+    'Current Leader: <span class="clf-leader">' + leaderName + '</span>' +
+    '<span class="clf-sep">|</span>' +
+    'Leadership Changes: <span class="clf-leader">' + changes + '</span>';
+  panelEl.appendChild(el);
+}
+
 // ── CHART RENDERERS ──────────────────────────────────────────
 
 function renderGainer(hist) {
@@ -823,7 +885,13 @@ function buildPanels(hist) {
     { id: 'payoff',      title: 'Payoff',          sub: 'net position in dollars',                              render: renderPayoff      },
   ];
 
-  PANELS.forEach(p => content.appendChild(makePanel(p.id, p.title, p.sub)));
+  // Panels that get the leader/changes footer (all except sp_index and payoff)
+  const LEADER_FOOTER_PANELS = new Set(['leaderboard', 'sp', 'gainer', 'loser', 'lock', 'basket']);
+  PANELS.forEach(p => {
+    const panelEl = makePanel(p.id, p.title, p.sub);
+    if (LEADER_FOOTER_PANELS.has(p.id)) appendLeaderFooter(panelEl, hist);
+    content.appendChild(panelEl);
+  });
   PANELS.forEach(p => p.render(hist));
 
   // Restore active panel from hash, default to sp_index
