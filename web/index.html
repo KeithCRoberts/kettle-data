@@ -869,6 +869,8 @@ function fmtP(v){ return v==null?'—':(v>=0?'+':'')+Number(v).toFixed(2)+'%'; }
 function fmtD(v){ return v==null?'—':(v>=0?'+$':'-$')+Math.abs(v); }
 function pc(v){ return v==null?'':v>=0?'pos':'neg'; }
 function rkCls(i){ return i===0?'g1':i===1?'g2':i===2?'g3':''; }
+// Mirrors wifi_rssi_label() thresholds in Net.cpp
+function rssiLabel(r){ return r>=-60?'Strong':r>=-70?'Fair':r>=-80?'Weak':'Poor'; }
 
 function bar(val,max){
   if(val==null||!max||isNaN(max)) return '<span class="sb"></span>';
@@ -1178,7 +1180,7 @@ function renderAbout(s){
     row('OWNER',     s.owner      || '—') +
     row('IP',        s.ip         || '—') +
     row('NETWORK',   s.wifi_ssid  || '—') +
-    row('SIGNAL',    s.wifi_rssi != null ? s.wifi_rssi+'&nbsp;dBm' : '—') +
+    row('SIGNAL',    s.wifi_rssi != null ? s.wifi_rssi+'&nbsp;dBm&nbsp;(' + rssiLabel(s.wifi_rssi) + ')' : '—') +
     row('UPTIME',    up);
 }
 
@@ -1464,7 +1466,7 @@ function render(data,status){
     const heap=Math.round(status.free_heap/1024)+'KB';
     const up=Math.floor(status.uptime_s/3600)+'h'+String(Math.floor((status.uptime_s%3600)/60)).padStart(2,'0')+'m';
     document.getElementById('ftr').innerHTML =
-      `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span><span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span><span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm</span>` +
+      `<span><b>kettle.local</b></span><span><b>v</b>${status.version}</span><span><b>id</b> ${status.device_id}</span><span><b>up</b> ${up}</span><span><b>heap</b> ${heap}</span><span><b>rssi</b> ${status.wifi_rssi}dBm (${rssiLabel(status.wifi_rssi)})</span>` +
       (status.battery_present ? `<span><b>batt</b> ${status.battery_pct}%</span>` : '') +
       (status.prev_crash_reason ? `<button class="prev-crash-badge" onclick="downloadDiagBundle()" title="Prev crash: ${{3:'PANIC',7:'INT_WDT',8:'TASK_WDT'}[status.prev_crash_reason]||'reason '+status.prev_crash_reason} — click to download diagnostics">⚠ DIAG</button>` : '') +
       `<button class="info-btn" onclick="openAbout()" title="About">ⓘ</button>`;
