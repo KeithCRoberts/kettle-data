@@ -644,39 +644,39 @@ function showPanel(id) {
 
 
 // ── LEADER STATS ─────────────────────────────────────────────
-// Derives current leader and leadership change count from history days.
-// Returns { leader: string|null, changes: number }
-function computeLeaderStats(days) {
+// Derives current leader and leadership change count from history days
+// for a given category rank accessor.
+//   days      — history days array
+//   rankFn    — fn(memberDayObj) → rank (1-based int), or null if no data
+// Returns { leaderIdx: number|null, changes: number }
+function computeLeaderStats(days, rankFn) {
   const sorted = days.slice().sort((a, b) => a.date < b.date ? -1 : 1);
-  let leader = null;
+  let leaderIdx = null;
   let changes = 0;
   let prevLeader = null;
   for (const day of sorted) {
     if (!day.m) continue;
-    // Find member with lb_rank === 1
-    const leaderIdx = day.m.findIndex(m => m.lb_rank === 1);
-    if (leaderIdx === -1) continue;
-    // We need the members array from hist; pass it in via closure at call site
-    // Actually we return the index — caller resolves to name
-    const currentLeader = leaderIdx;
+    const idx = day.m.findIndex(m => rankFn(m) === 1);
+    if (idx === -1) continue;
     if (prevLeader === null) {
-      prevLeader = currentLeader;
-      leader = currentLeader;
-    } else if (currentLeader !== prevLeader) {
+      prevLeader = idx;
+      leaderIdx = idx;
+    } else if (idx !== prevLeader) {
       changes++;
-      prevLeader = currentLeader;
-      leader = currentLeader;
+      prevLeader = idx;
+      leaderIdx = idx;
     } else {
-      leader = currentLeader;
+      leaderIdx = idx;
     }
   }
-  return { leaderIdx: leader, changes };
+  return { leaderIdx, changes };
 }
 
-// Builds and appends the leader footer element to a panel element.
-function appendLeaderFooter(panelEl, hist) {
+// Builds and appends the category-specific leader footer to a panel element.
+//   rankFn — fn(memberDayObj) → rank for this category
+function appendLeaderFooter(panelEl, hist, rankFn) {
   const { members, days } = hist;
-  const { leaderIdx, changes } = computeLeaderStats(days);
+  const { leaderIdx, changes } = computeLeaderStats(days, rankFn);
   const leaderName = (leaderIdx !== null && members[leaderIdx]) ? members[leaderIdx] : '—';
   const el = document.createElement('div');
   el.className = 'chart-leader-footer';
@@ -885,11 +885,18 @@ function buildPanels(hist) {
     { id: 'payoff',      title: 'Payoff',          sub: 'net position in dollars',                              render: renderPayoff      },
   ];
 
-  // Panels that get the leader/changes footer (all except sp_index and payoff)
-  const LEADER_FOOTER_PANELS = new Set(['leaderboard', 'sp', 'gainer', 'loser', 'lock', 'basket']);
+  // Per-panel rank accessors for the leader footer (omit sp_index and payoff)
+  const LEADER_RANK_FN = {
+    leaderboard: m => m.lb_rank,
+    sp:          m => m.sp     ? m.sp.rank     : null,
+    gainer:      m => m.gainer ? m.gainer.rank  : null,
+    loser:       m => m.loser  ? m.loser.rank   : null,
+    lock:        m => m.lock   ? m.lock.rank    : null,
+    basket:      m => m.basket ? m.basket.rank  : null,
+  };
   PANELS.forEach(p => {
     const panelEl = makePanel(p.id, p.title, p.sub);
-    if (LEADER_FOOTER_PANELS.has(p.id)) appendLeaderFooter(panelEl, hist);
+    if (LEADER_RANK_FN[p.id]) appendLeaderFooter(panelEl, hist, LEADER_RANK_FN[p.id]);
     content.appendChild(panelEl);
   });
   PANELS.forEach(p => p.render(hist));
