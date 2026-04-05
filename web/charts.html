@@ -374,8 +374,9 @@ footer{
 </div>
 
 <div class="tab-strip" id="tab-strip">
-  <button class="tab active" data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</button>
-  <button class="tab"        data-panel="sp"          onclick="showPanel('sp'         )">S&amp;P</button>
+  <button class="tab active" data-panel="sp_index"    onclick="showPanel('sp_index'   )">S&amp;P</button>
+  <button class="tab"        data-panel="leaderboard" onclick="showPanel('leaderboard')">Leaderboard</button>
+  <button class="tab"        data-panel="sp"          onclick="showPanel('sp'         )">S&amp;P PRED</button>
   <button class="tab"        data-panel="gainer"      onclick="showPanel('gainer'     )">Gainer</button>
   <button class="tab"        data-panel="loser"       onclick="showPanel('loser'      )">Loser</button>
   <button class="tab"        data-panel="lock"        onclick="showPanel('lock'       )">Lock</button>
@@ -674,6 +675,95 @@ function renderBasket(hist) {
   g_charts.basket = chart;
 }
 
+function renderSPIndex(hist) {
+  const { days, labels, periodStart, periodEnd } = hist;
+
+  // Build date→sp map from day.sp field
+  const spMap = {};
+  days.forEach(day => { if (day.sp != null) spMap[day.date] = day.sp; });
+  const spData = labels.map(iso => spMap[iso] != null ? spMap[iso] : null);
+
+  // Opening value = first recorded history day that has an sp value
+  const openingDay = days.slice().sort((a, b) => a.date < b.date ? -1 : 1)
+                          .find(d => d.sp != null);
+  const openingValue = openingDay ? openingDay.sp : null;
+
+  // Horizontal reference line at the period-open index level
+  const spOpenLinePlugin = {
+    id: 'spOpenLine',
+    afterDraw(chartInst) {
+      if (openingValue == null) return;
+      const yScale = chartInst.scales.y;
+      if (openingValue < yScale.min || openingValue > yScale.max) return;
+      const y = yScale.getPixelForValue(openingValue);
+      const ctx = chartInst.ctx;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(chartInst.chartArea.left, y);
+      ctx.lineTo(chartInst.chartArea.right, y);
+      ctx.strokeStyle = 'rgba(245,158,11,0.55)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([5, 5]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(245,158,11,0.75)';
+      ctx.font = "10px 'JetBrains Mono', monospace";
+      ctx.textAlign = 'right';
+      ctx.fillText('OPEN ' + openingValue.toLocaleString(), chartInst.chartArea.right - 4, y - 4);
+      ctx.restore();
+    }
+  };
+
+  const opts = makeOptions(
+    v => v >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v).toString(),
+    false, periodStart, periodEnd, { zeroLine: false }
+  );
+  // Extra top/bottom padding so the OPEN label has breathing room
+  opts.scales.y.afterDataLimits = function(scale) {
+    const range = scale.max - scale.min;
+    if (range === 0) return;
+    const pad = range * 0.12;
+    scale.min -= pad;
+    scale.max += pad;
+  };
+
+  const chart = new Chart(document.getElementById('canvas-sp_index'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'S&P 500',
+        data: spData,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59,130,246,0.08)',
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        pointBackgroundColor: '#3b82f6',
+        tension: 0.3,
+        spanGaps: false,
+        fill: true,
+      }]
+    },
+    options: opts,
+    plugins: [spOpenLinePlugin],
+  });
+  g_charts.sp_index = chart;
+
+  // Legend
+  const legendEl = document.getElementById('legend-sp_index');
+  if (legendEl) {
+    legendEl.innerHTML =
+      '<span class="legend-item">' +
+      '<span class="legend-swatch" style="background:#3b82f6"></span>S&amp;P 500' +
+      (openingValue != null
+        ? '<span style="margin-left:14px;color:rgba(245,158,11,0.75);font-size:10px;">' +
+          '&#9135;&#9135; PERIOD OPEN ' + openingValue.toLocaleString() + '</span>'
+        : '') +
+      '</span>';
+  }
+}
+
 function renderSP(hist) {
   const { members, days, labels, periodStart, periodEnd } = hist;
   const datasets = buildDatasets(members, days, labels, m => m.sp ? m.sp.pct_off : null);
@@ -685,6 +775,7 @@ function renderSP(hist) {
   buildLegend(document.getElementById('legend-sp'), chart, members);
   g_charts.sp = chart;
 }
+
 
 function renderLeaderboard(hist) {
   const { members, days, labels, periodStart, periodEnd } = hist;
@@ -722,24 +813,25 @@ function buildPanels(hist) {
   content.innerHTML = '';
 
   const PANELS = [
-    { id: 'leaderboard', title: 'Leaderboard',  sub: 'rank over time — #1 at top',                       render: renderLeaderboard },
-    { id: 'sp',          title: 'S&amp;P Pred', sub: '% error from index — inverted (closer = better at top)', render: renderSP },
-    { id: 'gainer',      title: 'Gainer',        sub: '% gain from season open',                          render: renderGainer      },
-    { id: 'loser',       title: 'Loser',          sub: '% change — inverted (lower = better at top)',     render: renderLoser       },
-    { id: 'lock',        title: 'Lock',           sub: '% gain from season open',                         render: renderLock        },
-    { id: 'basket',      title: 'Basket',         sub: '3-stock average % gain',                          render: renderBasket      },
-    { id: 'payoff',      title: 'Payoff',         sub: 'net position in dollars',                         render: renderPayoff      },
+    { id: 'sp_index',    title: 'S&amp;P Index', sub: 'index value YTD — dashed line = period open',           render: renderSPIndex     },
+    { id: 'leaderboard', title: 'Leaderboard',   sub: 'rank over time — #1 at top',                            render: renderLeaderboard },
+    { id: 'sp',          title: 'S&amp;P Pred',  sub: '% error from index — inverted (closer = better at top)', render: renderSP          },
+    { id: 'gainer',      title: 'Gainer',         sub: '% gain from season open',                               render: renderGainer      },
+    { id: 'loser',       title: 'Loser',           sub: '% change — inverted (lower = better at top)',          render: renderLoser       },
+    { id: 'lock',        title: 'Lock',            sub: '% gain from season open',                              render: renderLock        },
+    { id: 'basket',      title: 'Basket',          sub: '3-stock average % gain',                               render: renderBasket      },
+    { id: 'payoff',      title: 'Payoff',          sub: 'net position in dollars',                              render: renderPayoff      },
   ];
 
   PANELS.forEach(p => content.appendChild(makePanel(p.id, p.title, p.sub)));
   PANELS.forEach(p => p.render(hist));
 
-  // Restore active panel from hash, default to leaderboard
+  // Restore active panel from hash, default to sp_index
   const hash = location.hash.replace('#', '');
   if (hash && PANELS.find(p => p.id === hash)) {
     showPanel(hash);
   } else {
-    showPanel('leaderboard');
+    showPanel('sp_index');
   }
 }
 
