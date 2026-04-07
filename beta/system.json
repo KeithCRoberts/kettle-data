@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "latest_fw": "1.2.2",
-  "latest_fw_date": "2026-04-06",
-  "latest_fw_url": "https://github.com/KeithCRoberts/kettle-flasher/releases/download/v1.2.2/kettle-s3-v1.2.2.bin",
+  "latest_fw": "1.2.3",
+  "latest_fw_date": "2026-04-07",
+  "latest_fw_url": "https://github.com/KeithCRoberts/kettle-flasher/releases/download/v1.2.3/kettle-s3-v1.2.3.bin",
   "coredump_max_age_days": 5,
   "coredump_max_files": 10,
 
