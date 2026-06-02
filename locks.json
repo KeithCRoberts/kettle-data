@@ -6,6 +6,12 @@
 	  "symbol": "AXTI", 
 	  "date": "2026-01-08", 
 	  "price": 25.74
+	},
+	{
+	  "member": "Bob Taubert", 
+	  "symbol": "CGEM", 
+	  "date": "2026-05-13", 
+	  "price": 16.45
 	}
   ] 
 }
