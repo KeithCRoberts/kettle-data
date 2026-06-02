@@ -1,5 +1,7 @@
 {
   "period": "1H26",
+  "period_start": "2026-01-02",
+  "period_end": "2026-06-30",
   "payoff": {
     "ante": 100,
     "win": 75,
