@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "members": ["Al", "Bob", "Dave", "Joe", "Keith", "Ron", "Tim"],
+  "opening": {
+    "Al":    { "periods": 21, "best_period": 13, "sp": { "g": 4, "s": 1, "b": 6 }, "gainer": { "g": 2, "s": 3, "b": 3 }, "loser": { "g": 2, "s": 3, "b": 6 }, "lock": { "g": 3, "s": 2, "b": 3 }, "basket": { "g": 4, "s": 4, "b": 3 } },
+    "Bob":   { "periods": 21, "best_period": 16, "sp": { "g": 5, "s": 9, "b": 0 }, "gainer": { "g": 2, "s": 1, "b": 7 }, "loser": { "g": 4, "s": 3, "b": 1 }, "lock": { "g": 3, "s": 3, "b": 3 }, "basket": { "g": 3, "s": 2, "b": 4 } },
+    "Dave":  { "periods": 18, "best_period": 13, "sp": { "g": 6, "s": 4, "b": 0 }, "gainer": { "g": 3, "s": 3, "b": 3 }, "loser": { "g": 5, "s": 3, "b": 2 }, "lock": { "g": 1, "s": 0, "b": 3 }, "basket": { "g": 1, "s": 3, "b": 4 } },
+    "Joe":   { "periods": 12, "best_period": 18, "sp": { "g": 1, "s": 2, "b": 2 }, "gainer": { "g": 1, "s": 1, "b": 1 }, "loser": { "g": 2, "s": 0, "b": 4 }, "lock": { "g": 1, "s": 2, "b": 2 }, "basket": { "g": 2, "s": 0, "b": 2 } },
+    "Keith": { "periods": 12, "best_period": 11, "sp": { "g": 0, "s": 0, "b": 4 }, "gainer": { "g": 1, "s": 2, "b": 2 }, "loser": { "g": 0, "s": 2, "b": 0 }, "lock": { "g": 2, "s": 3, "b": 1 }, "basket": { "g": 2, "s": 2, "b": 1 } },
+    "Ron":   { "periods": 21, "best_period": 17, "sp": { "g": 5, "s": 3, "b": 3 }, "gainer": { "g": 6, "s": 7, "b": 1 }, "loser": { "g": 1, "s": 4, "b": 5 }, "lock": { "g": 3, "s": 3, "b": 2 }, "basket": { "g": 5, "s": 4, "b": 4 } },
+    "Tim":   { "periods": 21, "best_period": 16, "sp": { "g": 0, "s": 2, "b": 6 }, "gainer": { "g": 6, "s": 4, "b": 4 }, "loser": { "g": 6, "s": 5, "b": 2 }, "lock": { "g": 3, "s": 3, "b": 2 }, "basket": { "g": 4, "s": 6, "b": 3 } }
+  },
+  "periods": [
+    {
+      "period": "2H25",
+      "members": {
+        "Al":    { "sp": { "g": 0, "s": 1, "b": 0 }, "gainer": { "g": 0, "s": 0, "b": 0 }, "loser": { "g": 1, "s": 0, "b": 0 }, "lock": { "g": 0, "s": 0, "b": 0 }, "basket": { "g": 0, "s": 0, "b": 0 } },
+        "Bob":   { "sp": { "g": 0, "s": 0, "b": 0 }, "gainer": { "g": 0, "s": 0, "b": 1 }, "loser": { "g": 0, "s": 0, "b": 1 }, "lock": { "g": 1, "s": 0, "b": 0 }, "basket": { "g": 0, "s": 0, "b": 1 } },
+        "Dave":  { "sp": { "g": 1, "s": 0, "b": 0 }, "gainer": { "g": 0, "s": 0, "b": 0 }, "loser": { "g": 0, "s": 0, "b": 0 }, "lock": { "g": 0, "s": 0, "b": 0 }, "basket": { "g": 0, "s": 0, "b": 0 } },
+        "Joe":   { "sp": { "g": 0, "s": 0, "b": 0 }, "gainer": { "g": 0, "s": 1, "b": 0 }, "loser": { "g": 0, "s": 0, "b": 0 }, "lock": { "g": 0, "s": 0, "b": 1 }, "basket": { "g": 0, "s": 1, "b": 0 } },
+        "Keith": { "sp": { "g": 0, "s": 0, "b": 0 }, "gainer": { "g": 0, "s": 0, "b": 0 }, "loser": { "g": 0, "s": 0, "b": 0 }, "lock": { "g": 0, "s": 1, "b": 0 }, "basket": { "g": 0, "s": 0, "b": 0 } },
+        "Ron":   { "sp": { "g": 0, "s": 0, "b": 0 }, "gainer": { "g": 1, "s": 0, "b": 0 }, "loser": { "g": 0, "s": 0, "b": 0 }, "lock": { "g": 0, "s": 0, "b": 0 }, "basket": { "g": 1, "s": 0, "b": 0 } },
+        "Tim":   { "sp": { "g": 0, "s": 0, "b": 1 }, "gainer": { "g": 0, "s": 0, "b": 0 }, "loser": { "g": 0, "s": 1, "b": 0 }, "lock": { "g": 0, "s": 0, "b": 0 }, "basket": { "g": 0, "s": 0, "b": 0 } }
+      }
+    }
+  ]
+}
