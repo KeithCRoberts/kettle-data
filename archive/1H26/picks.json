@@ -1,0 +1,303 @@
+{
+  "period": "1H26",
+  "period_start": "2026-01-02",
+  "period_end": "2026-06-30",
+  "payoff": {
+    "ante": 100,
+    "win": 75,
+    "place": 40,
+    "show": 25,
+    "fines": {
+      "gainer_is_losing": 10,
+      "loser_is_gaining": 10,
+      "loser_gt_gainer": 10,
+      "slacker": 50
+    }
+  },
+  "members": [
+    {
+      "name": "Al Hammelman",
+      "nickname": "Al",
+      "S&P": 7531.0,
+      "gainer": "WVE",
+      "loser": "LCID",
+      "lock": "AXTI",
+      "basket1": "AXTI",
+      "basket2": "COHR",
+      "basket3": "GEV"
+    },
+    {
+      "name": "Bob Taubert",
+      "nickname": "Bob",
+      "S&P": 7124.0,
+      "gainer": "DASH",
+      "loser": "MLTX",
+      "lock": "CGEM",
+      "basket1": "NVDA",
+      "basket2": "SHOP",
+      "basket3": "AVGO"
+    },
+    {
+      "name": "Dave Fink",
+      "nickname": "Dave",
+      "S&P": 7255.0,
+      "gainer": "BHVN",
+      "loser": "TE",
+      "lock": "QBTS",
+      "basket1": "SERV",
+      "basket2": "TXN",
+      "basket3": "ZBRA"
+    },
+    {
+      "name": "Joe Kaberlein",
+      "nickname": "Joe",
+      "S&P": 7188.0,
+      "gainer": "SEZL",
+      "loser": "MTVA",
+      "lock": "SFIX",
+      "basket1": "NVO",
+      "basket2": "TFII",
+      "basket3": "ALAB"
+    },
+    {
+      "name": "Keith Roberts",
+      "nickname": "Keith",
+      "S&P": 7425.0,
+      "gainer": "LLY",
+      "loser": "KSS",
+      "lock": "VKTX",
+      "basket1": "AMD",
+      "basket2": "MU",
+      "basket3": "VRT"
+    },
+    {
+      "name": "Ron Taubert",
+      "nickname": "Ron",
+      "S&P": 7415.0,
+      "gainer": "TEAM",
+      "loser": "LRCX",
+      "lock": "NIO",
+      "basket1": "IRON",
+      "basket2": "ZS",
+      "basket3": "META"
+    },
+    {
+      "name": "Tim Osborne",
+      "nickname": "Tim",
+      "S&P": 7482.59,
+      "gainer": "UI",
+      "loser": "APVO",
+      "lock": "MSTR",
+      "basket1": "UI",
+      "basket2": "ORCL",
+      "basket3": "TTD"
+    }
+  ],
+  "watchlist": [
+    {
+      "symbol": "^GSPC",
+      "name": "S&P 500",
+      "open": 6845.50
+    },
+    {
+      "symbol": "ALAB",
+      "name": "Astera Labs",
+      "open": 166.36
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices",
+      "open": 214.16
+    },
+    {
+      "symbol": "APVO",
+      "name": "Aptevo Therapeutics",
+      "open": 9.43
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "open": 346.1
+    },
+    {
+      "symbol": "AXTI",
+      "name": "AXT, Inc.",
+      "open": 16.35
+    },
+    {
+      "symbol": "BHVN",
+      "name": "Biohaven Ltd.",
+      "open": 11.29
+    },
+    {
+      "symbol": "CGEM",
+      "name": "Cullinan Therapeutics",
+      "open": 10.35
+    },
+    {
+      "symbol": "COHR",
+      "name": "Coherent Corp",
+      "open": 184.57
+    },
+    {
+      "symbol": "DASH",
+      "name": "DoorDash",
+      "open": 226.48
+    },
+    {
+      "symbol": "GEV",
+      "name": "GE Vernova",
+      "open": 653.57
+    },
+    {
+      "symbol": "IRON",
+      "name": "Disc Medicine",
+      "open": 79.41
+    },
+    {
+      "symbol": "KSS",
+      "name": "Kohl's Corporation",
+      "open": 20.41
+    },
+    {
+      "symbol": "LCID",
+      "name": "Lucid Group, Inc.",
+      "open": 10.57
+    },
+    {
+      "symbol": "LLY",
+      "name": "Eli Lilly",
+      "open": 1074.68
+    },
+    {
+      "symbol": "LRCX",
+      "name": "Lam Research",
+      "open": 171.18
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms",
+      "open": 660.09
+    },
+    {
+      "symbol": "MLTX",
+      "name": "MoonLake Immunotherapeutics",
+      "open": 13.18
+    },
+    {
+      "symbol": "MSTR",
+      "name": "Strategy Inc",
+      "open": 151.95
+    },
+    {
+      "symbol": "MTVA",
+      "name": "MetaVia",
+      "open": 8.42
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron Technology",
+      "open": 285.41
+    },
+    {
+      "symbol": "NIO",
+      "name": "NIO Inc",
+      "open": 5.1
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "open": 186.5
+    },
+    {
+      "symbol": "NVO",
+      "name": "Novo Nordisk",
+      "open": 50.88
+    },
+    {
+      "symbol": "ORCL",
+      "name": "Oracle Corporation",
+      "open": 194.91
+    },
+    {
+      "symbol": "QBTS",
+      "name": "D-Wave Quantum",
+      "open": 26.15
+    },
+    {
+      "symbol": "SERV",
+      "name": "Serve Robotics",
+      "open": 10.38
+    },
+    {
+      "symbol": "SEZL",
+      "name": "Sezzle Inc.",
+      "open": 63.48
+    },
+    {
+      "symbol": "SFIX",
+      "name": "Stitch Fix",
+      "open": 5.25
+    },
+    {
+      "symbol": "SHOP",
+      "name": "Shopify",
+      "open": 160.97
+    },
+    {
+      "symbol": "TE",
+      "name": "T1 Energy Inc",
+      "open": 6.68
+    },
+    {
+      "symbol": "TEAM",
+      "name": "Atlassian",
+      "open": 162.14
+    },
+    {
+      "symbol": "TFII",
+      "name": "TFI International",
+      "open": 103.35
+    },
+    {
+      "symbol": "TTD",
+      "name": "The Trade Desk",
+      "open": 37.96
+    },
+    {
+      "symbol": "TXN",
+      "name": "Texas Instruments",
+      "open": 173.49
+    },
+    {
+      "symbol": "UI",
+      "name": "Ubiquiti Inc",
+      "open": 553.35
+    },
+    {
+      "symbol": "VKTX",
+      "name": "Viking Therapeutics",
+      "open": 35.18
+    },
+    {
+      "symbol": "VRT",
+      "name": "Vertiv Holdings",
+      "open": 162.01
+    },
+    {
+      "symbol": "WVE",
+      "name": "Wave Life Sciences",
+      "open": 17.0
+    },
+    {
+      "symbol": "ZBRA",
+      "name": "Zebra Technologies",
+      "open": 242.82
+    },
+    {
+      "symbol": "ZS",
+      "name": "Zscaler",
+      "open": 224.92
+    }
+  ]
+}
