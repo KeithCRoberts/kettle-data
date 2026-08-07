@@ -1,5 +1,12 @@
 {
-	"schema": 1,
-	"period": "2H26",
-	"locks": []
+  "schema": 1,
+  "period": "2H26",
+  "locks": [
+    {
+      "member": "Ron Taubert", 
+	  "symbol": "GCT", 
+	  "date": "2026-08-06", 
+	  "price": 52.40
+	}
+  ]
 }
