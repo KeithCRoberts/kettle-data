@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "headline": "Kettle Web 2.0 is now live",
-  "body": "The new web UI is now live - please provide any feedback to Keith. You can switch back to the classic view using the button at the top.",
-  "expires": "2026-10-24",
-  "posted": "2026-10-17",
+  "headline": "Kettle Web Service Outage",
+  "body": "Due to a planned electrical service outage, Kettle Web will be unavailable this Thursday (10/22) and Friday (10/23).",
+  "expires": "2026-10-23",
+  "posted": "2026-10-21",
   "author": "Keith"
 }
