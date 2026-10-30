@@ -115,6 +115,9 @@
       "basket3": "WDC"
     }
   ],
+  "splits": [
+  { "symbol": "RUBI", "date": "2026-10-30", "num": 1, "den": 25 }
+  ],
   "watchlist": [
     {
       "symbol": "^GSPC",
